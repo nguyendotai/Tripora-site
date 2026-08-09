@@ -15,7 +15,7 @@ cp .env.example .env.local   # trỏ NEXT_PUBLIC_API_BASE_URL sang backend
 npm run dev
 ```
 
-Mở http://localhost:3000.
+Mở http://localhost:3002.
 
 ## Cấu trúc thư mục
 ```

@@ -91,6 +91,7 @@ Quy tắc: Card nội dung dùng `rounded-[var(--radius-lg)]`, ảnh Popular Loc
 - **Stats Teaser (trước Footer)**: nền tối cố định (giống Hero, không đổi theo theme), số liệu lớn bold trắng (ví dụ "X+ Destinations") + label nhỏ mờ bên dưới.
 
 ### 6.6 Typography Accent
+- **Font chữ**: `Google Sans` (text) + `Google Sans Code` (monospace) qua `next/font/google`, khai báo ở `src/app/layout.tsx` với `variable: "--font-sans"`/`"--font-mono"` (khớp trực tiếp token Tailwind, không đặt tên khác như `--font-geist-sans`). Subsets bắt buộc gồm `latin` + `vietnamese`. Không tự đổi sang font khác khi chưa có yêu cầu.
 - Heading Hero: `text-4xl`~`text-6xl`, bold/extrabold, luôn màu trắng trên overlay tối (bất kể theme).
 - Heading Section: bold, có thể gạch chân ngắn (`border-bottom` 2-3px màu `--primary`) dưới đúng 1 từ khoá nhấn mạnh — không gạch chân cả tiêu đề.
 - Giá tiền: `--primary`, bold, cỡ lớn hơn text thường xung quanh.

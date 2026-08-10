@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { Logo } from '@/shared/components/logo';
 import { ThemeToggle } from '@/shared/components/theme-toggle';
-import { Button, buttonVariants } from '@/shared/components/ui/button';
-import { cn } from '@/shared/lib/utils';
+import { AuthNavActions } from '@/shared/components/auth-nav-actions';
+import { Button } from '@/shared/components/ui/button';
 
 const NAV_LINKS = [
   { href: '/properties', label: 'Khách sạn' },
@@ -35,12 +35,7 @@ export function Navbar() {
             <Search className="size-4.5" />
           </Button>
           <ThemeToggle />
-          <Link href="/login" className={cn(buttonVariants({ variant: 'outline' }), 'hidden sm:inline-flex')}>
-            Đăng nhập
-          </Link>
-          <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'rounded-full')}>
-            Đăng ký
-          </Link>
+          <AuthNavActions />
         </div>
       </div>
     </header>

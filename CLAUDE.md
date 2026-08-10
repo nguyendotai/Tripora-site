@@ -6,6 +6,7 @@ Tài liệu quy định toàn bộ tiêu chuẩn phát triển Frontend dự án
 ## 1. TECH STACK & FRAMEWORK
 - React, Next.js (App Router, cấm Pages Router, cấm API Route FE), TypeScript (strict-mode, cấm `any`/`as`), Tailwind CSS (Mobile First, cấm CSS thuần/`!important`), Redux Toolkit, RTK Query, React Hook Form, Zod, Framer Motion, shadcn/ui.
 - React: Functional Component + Hooks. Cấm Class Component/Legacy Context. Component <300 dòng.
+- **Design quality**: Khi viết/chỉnh giao diện (landing page, trang danh sách Destination/Property/Product, trang marketing) BẮT BUỘC áp dụng skill `.claude/skills/design-taste-frontend/SKILL.md` (đã cài — xem `SOURCE.md` cùng thư mục) để tránh giao diện "nhìn kiểu AI" (gradient tím mặc định, 3 card đều nhau, em-dash, Inter mặc định...). Skill này **chỉ áp dụng cho `frontend/`**, không dùng cho `admin/` (tự khai báo không dành cho dashboard/data table).
 
 ## 2. STATE MANAGEMENT & API CALLS
 - **Server Data**: Quản lý bằng **RTK Query** (Query, Mutation, Cache, Tags, Invalidate Cache — ví dụ: invalidate `RoomAvailability` sau khi tạo Booking). *Cấm dùng useState, Redux Slice để lưu data Server*. *Cấm dùng Axios, fetch() trực tiếp trong Component*.

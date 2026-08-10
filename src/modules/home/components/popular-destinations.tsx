@@ -2,16 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { ScrollReveal } from '@/shared/components/scroll-reveal';
+import { getDestinations } from '@/features/destination';
 
-const DESTINATIONS = [
-  { name: 'Đà Nẵng', href: '/destinations/da-nang', seed: 'tripora-da-nang-bridge', featured: true },
-  { name: 'Hội An', href: '/destinations/hoi-an', seed: 'tripora-hoi-an-lanterns' },
-  { name: 'Phú Quốc', href: '/destinations/phu-quoc', seed: 'tripora-phu-quoc-beach' },
-  { name: 'Sa Pa', href: '/destinations/sa-pa', seed: 'tripora-sa-pa-terraces' },
-  { name: 'Đà Lạt', href: '/destinations/da-lat', seed: 'tripora-da-lat-pines' },
-];
+export async function PopularDestinations() {
+  const destinations = await getDestinations({ limit: 5 });
 
-export function PopularDestinations() {
+  if (destinations.length === 0) {
+    return null;
+  }
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
       <ScrollReveal>
@@ -29,16 +28,16 @@ export function PopularDestinations() {
 
       <ScrollReveal delay={0.1}>
         <div className="grid grid-flow-dense grid-cols-2 gap-4 sm:grid-cols-3">
-          {DESTINATIONS.map((destination) => (
+          {destinations.map((destination, index) => (
             <Link
-              key={destination.href}
-              href={destination.href}
+              key={destination.id}
+              href={`/destinations/${destination.slug}`}
               className={`group relative block overflow-hidden rounded-[var(--radius-xl)] ${
-                destination.featured ? 'col-span-2 row-span-2 aspect-square sm:aspect-auto' : 'aspect-square'
+                index === 0 ? 'col-span-2 row-span-2 aspect-square sm:aspect-auto' : 'aspect-square'
               }`}
             >
               <Image
-                src={`https://picsum.photos/seed/${destination.seed}/800/800`}
+                src={destination.images?.[0] ?? `https://picsum.photos/seed/tripora-${destination.slug}/800/800`}
                 alt={destination.name}
                 fill
                 sizes="(min-width: 640px) 33vw, 50vw"

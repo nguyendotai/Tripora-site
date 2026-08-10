@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/shared/components/navbar";
 import { Footer } from "@/shared/components/footer";
+import { IntroSplash } from "@/shared/components/intro-splash";
 
 const googleSans = Google_Sans({
   variable: "--font-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>
+          <IntroSplash />
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />

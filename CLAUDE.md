@@ -31,7 +31,7 @@ Tài liệu quy định toàn bộ tiêu chuẩn phát triển Frontend dự án
 Build thành công; không lỗi TS/ESLint; Responsive; có đủ UI States; không đổi code ngoài phạm vi; cập nhật CHANGELOG.md và PROJECT_STATUS.md.
 
 ## 6. DESIGN SYSTEM (LANDING / DISCOVERY REFERENCE)
-> Phân tích từ ảnh reference phong cách "Travel Booking Landing" (nền sáng chủ đạo, Hero ảnh nền phủ overlay tối, card bo lớn, brand đỏ cam rực). **Chỉ lấy bố cục/tỉ lệ/màu sắc/thành phần UI làm tham chiếu — KHÔNG copy tên thương hiệu/logo trong ảnh, giữ nguyên tên & nội dung Tripora.** Áp dụng cho Landing Page, Destination/Property/Product listing, Search Widget. Biến CSS khai báo tại `:root` (Light, mặc định) và `.dark` (Dark) trong `src/app/globals.css`, đúng convention shadcn/ui.
+> Phân tích từ ảnh reference phong cách "Travel Booking Landing" (nền sáng chủ đạo, Hero ảnh nền phủ overlay tối, card bo lớn). **Chỉ lấy bố cục/tỉ lệ/thành phần UI làm tham chiếu — KHÔNG copy tên thương hiệu/logo/màu trong ảnh, giữ nguyên tên & nội dung Tripora.** Màu sắc thực tế lấy từ logo chính thức (navy `#14365C` + teal `#0C8788`, xem 6.3), không phải đỏ cam trong ảnh reference gốc. Áp dụng cho Landing Page, Destination/Property/Product listing, Search Widget. Biến CSS khai báo tại `:root` (Light, mặc định) và `.dark` (Dark) trong `src/app/globals.css`, đúng convention shadcn/ui.
 
 ### 6.1 Border Radius Scale
 | Token | ~Px | Dùng cho |
@@ -49,9 +49,11 @@ Quy tắc: Card nội dung dùng `rounded-[var(--radius-lg)]`, ảnh Popular Loc
 - **Light (mặc định, khớp ảnh mẫu)**: nền trang trắng/xám rất nhạt (`--background`), Card nền trắng đặc + shadow nhẹ (không glassmorphism/backdrop-blur — phong cách ảnh "clean/editorial", khác hẳn dự án cũ).
 - **Dark (suy ra theo tông thương hiệu, ảnh mẫu không có ví dụ Dark thật)**: nền tối navy gần đen, Card tối hơn nền 1 bậc kèm border mờ, vẫn dùng shadow nhẹ (không glow lớn).
 - **Hero Section**: luôn là ảnh nền + lớp phủ tối (`linear-gradient(180deg, rgba(10,14,23,.5) 0%, rgba(10,14,23,.85) 100%)`) để chữ trắng nổi bật — **cố định như nhau ở cả Light lẫn Dark theme**, không đổi theo token nền chính (giống 1 section ảnh độc lập, không phải "Dark mode toàn trang").
-- **Trusted-by / Partner Strip**: nền đặc màu Brand đỏ (`--primary`), logo đối tác trắng/mờ trắng — cũng cố định 2 theme như Hero.
+- **Trusted-by / Partner Strip**: nền đặc màu Brand navy, logo đối tác trắng/mờ trắng — cũng cố định 2 theme như Hero. **Lưu ý**: từ khi `--primary` có 2 giá trị khác nhau theo theme (xem 6.3/6.4), section này phải hardcode thẳng `#14365C` (màu Light) thay vì dùng biến `--primary`/class `bg-primary`, nếu không nền sẽ đổi màu theo Dark theme — phá vỡ tính "cố định 2 theme" của section.
 
 ### 6.3 Color Tokens
+> Cập nhật từ logo chính thức (`frontend/public/logo.png` — full lockup, `frontend/public/logo-icon.png` — icon riêng dùng cho Navbar/Footer nhỏ): Navy `#14365C` (icon la bàn + wordmark) + Teal `#0C8788` (vệt swoosh). Màu lấy chính xác qua sample pixel từ file logo, không phải ước lượng mắt thường.
+
 | Token | Light | Dark |
 | :--- | :--- | :--- |
 | `--background` | `#FFFFFF` | `#0B0F17` |
@@ -59,31 +61,34 @@ Quy tắc: Card nội dung dùng `rounded-[var(--radius-lg)]`, ảnh Popular Loc
 | `--card` | `#FFFFFF` | `#141822` |
 | `--card-foreground` | `#14171F` | `#F4F5F7` |
 | `--popover` | `#FFFFFF` | `#141822` |
-| `--primary` (Brand đỏ cam) | `#E5402C` | `#E5402C` (giữ nguyên, không đổi theo theme) |
+| `--primary` (Brand navy) | `#14365C` | `#3D6FA8` (**lightened** — navy gốc quá tối/mất contrast trên nền Dark gần đen `#0B0F17`, xem 6.4) |
 | `--primary-foreground` | `#FFFFFF` | `#FFFFFF` |
 | `--secondary` | `#F3F4F6` | `#1B2029` |
 | `--secondary-foreground` | `#14171F` | `#E7E9EE` |
 | `--muted` | `#F6F7F9` | `#171B24` |
 | `--muted-foreground` | `#6B7280` | `#8B93A3` |
-| `--accent` (nền tint đỏ nhạt cho hover/badge) | `#FFF1EF` | `#2A1512` |
-| `--accent-foreground` | `#E5402C` | `#FF8A75` |
+| `--accent` (nền tint teal nhạt cho hover/badge) | `#E3F5F4` | `#0F2C2C` |
+| `--accent-foreground` (Brand teal) | `#0C8788` | `#3FD9D0` |
 | `--destructive` | `#DC2626` | `#F87171` |
 | `--border` | `rgba(0,0,0,.08)` | `rgba(255,255,255,.08)` |
 | `--input` | `rgba(0,0,0,.10)` | `rgba(255,255,255,.10)` |
-| `--ring` | `#E5402C` | `#E5402C` |
+| `--ring` | `#14365C` | `#3D6FA8` |
+| `--chart-1` (đồng bộ `--primary`) | `#14365C` | `#3D6FA8` |
+| `--chart-2` (đồng bộ `--accent-foreground`) | `#0C8788` | `#3FD9D0` |
 | success (rating star, badge "Best Price") | `#16A34A` | `#22C55E` |
 | info (badge loại chuyến/loại hình) | `#2563EB` | `#60A5FA` |
 | warning (badge VIP/nổi bật) | `#F59E0B` | `#FBBF24` |
 | purple (badge gói/ưu đãi) | `#7C3AED` | `#A78BFA` |
 
 ### 6.4 Brand Color & Effect
-- **Brand chính**: đỏ cam `#E5402C` (tham chiếu trực tiếp từ ảnh mẫu — dùng cho Button chính, Tab active, giá tiền nổi bật, Trusted-by banner). Dùng **nhất quán ở cả 2 theme** (không đổi sắc theo Light/Dark, chỉ nền/Card xung quanh đổi) để giữ nhận diện thương hiệu.
-- Button chính: nền đặc `--primary`, chữ trắng, `rounded-full`, hover tăng nhẹ độ đậm/shadow màu đỏ mờ — không dùng glow lớn kiểu glassmorphism.
+- **Brand chính**: navy `#14365C` (lấy từ logo chính thức — dùng cho Button chính, Tab active, giá tiền nổi bật, Trusted-by banner) + **Teal `#0C8788`** làm màu nhấn phụ (accent tint, hover, badge nổi bật — vai trò tương tự vệt swoosh trong logo). Khác quy ước cũ (giữ y hệt 1 mã hex ở cả 2 theme): navy quá tối để dùng trực tiếp trên nền Dark gần đen, nên riêng `--primary`/`--ring`/`--chart-1` ở Dark theme dùng bản navy **sáng hơn** `#3D6FA8` để đảm bảo đủ contrast (đủ đọc trên nút/tab), Teal accent vẫn giữ tinh thần gần giống nhau ở 2 theme (chỉ đổi độ sáng/nền tint).
+- Button chính: nền đặc `--primary`, chữ trắng, `rounded-full`, hover tăng nhẹ độ đậm/shadow màu navy mờ — không dùng glow lớn kiểu glassmorphism.
 - Card: shadow nhẹ (`0 2px 12px rgba(0,0,0,.06)` Light, `0 2px 12px rgba(0,0,0,.4)` Dark), viền `--border` mờ, không backdrop-blur.
 - Badge/Tag nhiều màu (info/warning/purple/success ở 6.3) dùng cho phân loại (loại chuyến, gói ưu đãi, đánh giá) — nền là bản nhạt (10-15% opacity) của màu tương ứng, chữ là bản đậm.
+- **Logo**: dùng component dùng chung `shared/components/logo.tsx` — luôn dùng `public/logo-icon.png` (chỉ icon, không kèm chữ) cạnh text "Tripora" viết bằng font thật (không dùng ảnh full lockup `public/logo.png` — quá nhiều chi tiết/tỉ lệ dọc, không hợp Navbar ngang). File `public/logo.png` (full lockup) dự phòng cho các vị trí cần logo lớn/độc lập sau này (email template, OG image...).
 
 ### 6.5 Component Pattern quan sát từ ảnh
-- **Navbar**: nền `--background` đặc, logo + icon nhấn màu `--primary`, menu ngang, icon search, nút viền "Sign In" (`border`, `rounded-full`) + nút đặc đỏ pill (CTA chính, `rounded-full`).
+- **Navbar**: nền `--background` đặc, logo (`shared/components/logo.tsx`, dùng `public/logo-icon.png`) + icon nhấn màu `--primary`, menu ngang, icon search, nút viền "Sign In" (`border`, `rounded-full`) + nút đặc navy pill (CTA chính, `rounded-full`, nền `--primary`).
 - **Hero**: ảnh nền full-width + overlay tối (xem 6.2), heading trắng rất lớn/bold (có thể chèn icon/emoji nhấn giữa câu), **Search Widget** là 1 Card nổi (`--radius-xl`, shadow lớn) đè lên mép dưới Hero — Tabs ngang chọn loại dịch vụ (Property/Product/...), tab active có nền/underline `--primary`, các field tìm kiếm + nút Search (`rounded-full`, nền `--primary`) nằm cuối hàng.
 - **Popular Destinations**: grid ảnh `--radius-xl`, overlay gradient tối ở đáy ảnh để tên địa danh (chữ trắng) luôn đọc rõ; có thể có 1 ô là nút tròn "Xem thêm" (mũi tên, nền `--primary`).
 - **Trusted-by / Partner Strip**: dải nền đặc `--primary`, logo đối tác trắng/mờ trắng, chữ giới thiệu nhỏ ở giữa.

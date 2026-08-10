@@ -31,12 +31,50 @@ function isApiResponseEnvelope(value: unknown): value is ApiResponse<unknown> {
   return typeof value === 'object' && value !== null && 'success' in value && 'data' in value;
 }
 
-const baseQueryWithEnvelopeUnwrap: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+// Phải khớp STORAGE_KEY ở features/auth/services/auth-storage.ts — không import ngược
+// từ shared/ sang features/ (folder-structure.md mục 4: Feature -> Shared, không theo chiều ngược lại).
+const AUTH_STORAGE_KEY = 'tripora-auth';
+
+/**
+ * accessToken hết hạn (401) — thử refresh-token rotation 1 lần trước khi coi như đã đăng xuất
+ * (refreshToken nằm trong Cookie HTTP-Only, gửi tự động qua credentials: 'include'). Khác Admin:
+ * KHÔNG ép chuyển hướng /login — Frontend cho phép duyệt công khai không cần đăng nhập, chỉ cần
+ * xoá phiên hết hạn để hành động yêu cầu đăng nhập tiếp theo hỏi lại đúng cách.
+ */
+const baseQueryWithAuthHandling: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
   extraOptions,
 ) => {
-  const result = await rawBaseQuery(args, api, extraOptions);
+  let result = await rawBaseQuery(args, api, extraOptions);
+
+  if (result.error?.status === 401) {
+    const isRefreshCall = typeof args !== 'string' && args.url === '/auth/refresh';
+
+    if (!isRefreshCall) {
+      const refreshResult = await rawBaseQuery({ url: '/auth/refresh', method: 'POST' }, api, extraOptions);
+
+      if (!refreshResult.error && isApiResponseEnvelope(refreshResult.data)) {
+        const { accessToken } = refreshResult.data.data as { accessToken: string };
+        const user = (api.getState() as RootState).auth.user;
+
+        if (accessToken && user) {
+          api.dispatch({ type: 'auth/setCredentials', payload: { accessToken, user } });
+          if (typeof window !== 'undefined') {
+            window.localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ accessToken, user }));
+          }
+          result = await rawBaseQuery(args, api, extraOptions);
+        }
+      }
+    }
+
+    if (result.error?.status === 401) {
+      api.dispatch({ type: 'auth/clearCredentials' });
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(AUTH_STORAGE_KEY);
+      }
+    }
+  }
 
   // Backend luôn bọc response thành công qua ResponseInterceptor: { success, message, data, timestamp }.
   // Endpoint chỉ khai báo type của phần `data` — phải bóc vỏ ở đây 1 lần duy nhất.
@@ -49,7 +87,7 @@ const baseQueryWithEnvelopeUnwrap: BaseQueryFn<string | FetchArgs, unknown, Fetc
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  baseQuery: baseQueryWithEnvelopeUnwrap,
+  baseQuery: baseQueryWithAuthHandling,
   tagTypes: ['User', 'Property', 'Booking'],
   endpoints: () => ({}),
 });

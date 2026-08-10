@@ -35,10 +35,13 @@ export function AuthNavActions() {
   if (user) {
     return (
       <div className="flex items-center gap-2">
-        <span className="hidden items-center gap-1.5 text-sm font-medium text-foreground sm:flex">
+        <Link
+          href="/account"
+          className="hidden items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary sm:flex"
+        >
           <User className="size-4" />
           {user.email}
-        </span>
+        </Link>
         <Button variant="outline" size="sm" onClick={handleLogout}>
           <LogOut className="size-4" />
           Đăng xuất

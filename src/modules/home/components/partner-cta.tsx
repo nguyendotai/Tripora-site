@@ -16,7 +16,7 @@ export function PartnerCta() {
             Đăng ký làm đối tác để quản lý phòng, lịch tour và nhận đặt chỗ trực tiếp từ khách du lịch.
           </p>
           <Link
-            href="/partners"
+            href="/become-partner"
             className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'rounded-full')}
           >
             Trở thành đối tác

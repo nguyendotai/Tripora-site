@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -35,7 +36,12 @@ function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-sm rounded-[var(--radius-xl)] border border-border bg-card p-8 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 16, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full max-w-sm rounded-[var(--radius-xl)] border border-border bg-card p-8 shadow-sm"
+    >
       <div className="flex justify-center">
         <Logo />
       </div>
@@ -78,7 +84,7 @@ function LoginForm() {
           {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </Button>
       </form>
-    </div>
+    </motion.div>
   );
 }
 

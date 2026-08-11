@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { getDestinations } from "@/features/destination/services/get-destinations";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
+import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
 export default async function DestinationsPage({
   searchParams,
@@ -42,31 +43,32 @@ export default async function DestinationsPage({
             </div>
           ) : (
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {result.items.map((destination) => (
-                <Link
-                  key={destination.id}
-                  href={`/destinations/${destination.slug}`}
-                  className="group overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={
-                        destination.images?.[0] ??
-                        `https://picsum.photos/seed/${destination.slug}/700/500`
-                      }
-                      alt={destination.name}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, 50vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs text-muted-foreground">
-                      {destination.country}
-                    </p>
-                    <p className="font-semibold">{destination.name}</p>
-                  </div>
-                </Link>
+              {result.items.map((destination, index) => (
+                <ScrollReveal key={destination.id} delay={(index % 6) * 0.06}>
+                  <Link
+                    href={`/destinations/${destination.slug}`}
+                    className="group block overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card transition-transform duration-300 hover:-translate-y-1"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <Image
+                        src={
+                          destination.images?.[0] ??
+                          `https://picsum.photos/seed/${destination.slug}/700/500`
+                        }
+                        alt={destination.name}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <p className="text-xs text-muted-foreground">
+                        {destination.country}
+                      </p>
+                      <p className="font-semibold">{destination.name}</p>
+                    </div>
+                  </Link>
+                </ScrollReveal>
               ))}
             </div>
           )}

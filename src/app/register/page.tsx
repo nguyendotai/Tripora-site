@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -37,7 +38,12 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted px-4 py-10">
-      <div className="w-full max-w-sm rounded-[var(--radius-xl)] border border-border bg-card p-8 shadow-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 16, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-sm rounded-[var(--radius-xl)] border border-border bg-card p-8 shadow-sm"
+      >
         <div className="flex justify-center">
           <Logo />
         </div>
@@ -99,7 +105,7 @@ export default function RegisterPage() {
             {isLoading ? "Đang tạo tài khoản..." : "Tạo tài khoản"}
           </Button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 }

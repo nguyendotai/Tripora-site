@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ScrollReveal } from "@/shared/components/scroll-reveal";
 import { MOCK_DESTINATIONS } from "../data/mock-destinations";
 
 export function PopularDestinations() {
@@ -7,7 +8,7 @@ export function PopularDestinations() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-      <div className="mb-8 flex items-end justify-between gap-4">
+      <ScrollReveal className="mb-8 flex items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold sm:text-3xl">
             <span className="border-b-[3px] border-primary pb-1">
@@ -25,15 +26,27 @@ export function PopularDestinations() {
         >
           Xem tất cả →
         </Link>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-2">
-        <DestinationTile destination={first} className="md:col-span-2 md:row-span-2" tall />
-        <DestinationTile destination={second} />
-        <DestinationTile destination={third} />
-        <DestinationTile destination={fourth} className="md:col-span-2" />
-        <DestinationTile destination={fifth} />
-        <DestinationTile destination={sixth} />
+        <ScrollReveal delay={0} className="md:col-span-2 md:row-span-2">
+          <DestinationTile destination={first} tall />
+        </ScrollReveal>
+        <ScrollReveal delay={0.06}>
+          <DestinationTile destination={second} />
+        </ScrollReveal>
+        <ScrollReveal delay={0.12}>
+          <DestinationTile destination={third} />
+        </ScrollReveal>
+        <ScrollReveal delay={0.06} className="md:col-span-2">
+          <DestinationTile destination={fourth} />
+        </ScrollReveal>
+        <ScrollReveal delay={0.18}>
+          <DestinationTile destination={fifth} />
+        </ScrollReveal>
+        <ScrollReveal delay={0.24}>
+          <DestinationTile destination={sixth} />
+        </ScrollReveal>
       </div>
     </section>
   );
@@ -41,19 +54,17 @@ export function PopularDestinations() {
 
 function DestinationTile({
   destination,
-  className = "",
   tall = false,
 }: {
   destination: (typeof MOCK_DESTINATIONS)[number];
-  className?: string;
   tall?: boolean;
 }) {
   return (
     <Link
       href={`/destinations/${destination.slug}`}
-      className={`group relative block overflow-hidden rounded-[var(--radius-xl)] ${
+      className={`group relative block h-full w-full overflow-hidden rounded-[var(--radius-xl)] transition-transform duration-300 hover:-translate-y-1 ${
         tall ? "aspect-[4/5] sm:aspect-auto" : "aspect-square sm:aspect-[4/3]"
-      } ${className}`}
+      }`}
     >
       <Image
         src={`https://picsum.photos/seed/${destination.seed}/800/900`}

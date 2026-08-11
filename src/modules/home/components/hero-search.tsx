@@ -1,10 +1,16 @@
 "use client";
 
 import { Compass, MapPin, Search } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export function HeroSearch() {
   return (
@@ -26,18 +32,36 @@ export function HeroSearch() {
         />
 
         <div className="relative mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center">
-          <h1 className="max-w-3xl text-4xl font-extrabold leading-tight text-white sm:text-6xl">
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-3xl text-4xl font-extrabold leading-tight text-white sm:text-6xl"
+          >
             Khám phá thế giới,{" "}
             <span className="text-accent-foreground">một hành trình</span> mỗi lần
-          </h1>
-          <p className="mt-4 max-w-xl text-base text-white/80 sm:text-lg">
+          </motion.h1>
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 max-w-xl text-base text-white/80 sm:text-lg"
+          >
             Tripora giúp bạn tìm điểm đến, đọc cẩm nang thật và tự tay lên lịch
             trình cho chuyến đi tiếp theo.
-          </p>
+          </motion.p>
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto -mt-16 max-w-3xl px-4 sm:-mt-20">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 mx-auto -mt-16 max-w-3xl px-4 sm:-mt-20"
+      >
         <div className="rounded-[var(--radius-xl)] border border-border bg-card p-3 shadow-[0_20px_60px_-15px_rgba(0,0,0,.35)] sm:p-4">
           <Tabs defaultValue="destinations">
             <TabsList>
@@ -88,7 +112,7 @@ export function HeroSearch() {
             </TabsContent>
           </Tabs>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

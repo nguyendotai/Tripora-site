@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { getDestinationBySlug } from "@/features/destination/services/get-destinations";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
+import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
 export default async function DestinationDetailPage({
   params,
@@ -39,7 +40,7 @@ export default async function DestinationDetailPage({
                 "linear-gradient(180deg, rgba(10,14,23,.2) 0%, rgba(10,14,23,.75) 100%)",
             }}
           />
-          <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+          <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
             {destination.country && (
               <p className="text-sm font-medium text-white/80">
                 {destination.country}
@@ -48,10 +49,10 @@ export default async function DestinationDetailPage({
             <h1 className="text-3xl font-extrabold text-white sm:text-5xl">
               {destination.name}
             </h1>
-          </div>
+          </ScrollReveal>
         </div>
 
-        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+        <ScrollReveal className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
           {destination.tags && destination.tags.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
               {destination.tags.map((tag) => (
@@ -64,7 +65,7 @@ export default async function DestinationDetailPage({
           <p className="whitespace-pre-line text-foreground/90">
             {destination.description ?? "Chưa có mô tả cho điểm đến này."}
           </p>
-        </div>
+        </ScrollReveal>
       </main>
       <Footer />
     </>

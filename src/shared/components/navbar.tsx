@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AuthNavActions } from "./auth-nav-actions";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -35,21 +36,7 @@ export function Navbar() {
             <span className="sr-only">Tìm kiếm</span>
           </Button>
           <ThemeToggle />
-          <Button
-            variant="outline"
-            className="hidden rounded-full sm:inline-flex"
-            nativeButton={false}
-            render={<Link href="/login" />}
-          >
-            Đăng nhập
-          </Button>
-          <Button
-            className="rounded-full"
-            nativeButton={false}
-            render={<Link href="/register" />}
-          >
-            Bắt đầu
-          </Button>
+          <AuthNavActions />
         </div>
       </div>
     </header>

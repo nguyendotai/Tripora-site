@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AuthNavActions } from "./auth-nav-actions";
 import { Logo } from "./logo";
+import { NotificationBell } from "./notification-bell";
 import { ThemeToggle } from "./theme-toggle";
 
 const NAV_LINKS = [
@@ -42,6 +43,7 @@ export function Navbar() {
             <Search className="h-4 w-4" />
             <span className="sr-only">Tìm kiếm</span>
           </Button>
+          <NotificationBell />
           <ThemeToggle />
           <AuthNavActions />
         </div>

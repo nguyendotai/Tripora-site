@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { getDestinationBySlug } from "@/features/destination/services/get-destinations";
+import { ReviewSection } from "@/features/review/components/review-section";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { WishlistButton } from "@/shared/components/wishlist-button";
 
 export default async function DestinationDetailPage({
   params,
@@ -40,15 +42,21 @@ export default async function DestinationDetailPage({
                 "linear-gradient(180deg, rgba(10,14,23,.2) 0%, rgba(10,14,23,.75) 100%)",
             }}
           />
-          <ScrollReveal className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
-            {destination.country && (
-              <p className="text-sm font-medium text-white/80">
-                {destination.country}
-              </p>
-            )}
-            <h1 className="text-3xl font-extrabold text-white sm:text-5xl">
-              {destination.name}
-            </h1>
+          <ScrollReveal className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 sm:p-10">
+            <div>
+              {destination.country && (
+                <p className="text-sm font-medium text-white/80">
+                  {destination.country}
+                </p>
+              )}
+              <h1 className="text-3xl font-extrabold text-white sm:text-5xl">
+                {destination.name}
+              </h1>
+            </div>
+            <WishlistButton
+              destinationId={destination.id}
+              className="h-11 w-11 shrink-0 bg-white/15 hover:bg-white/25"
+            />
           </ScrollReveal>
         </div>
 
@@ -65,6 +73,10 @@ export default async function DestinationDetailPage({
           <p className="whitespace-pre-line text-foreground/90">
             {destination.description ?? "Chưa có mô tả cho điểm đến này."}
           </p>
+        </ScrollReveal>
+
+        <ScrollReveal className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 lg:px-8">
+          <ReviewSection destinationId={destination.id} />
         </ScrollReveal>
       </main>
       <Footer />

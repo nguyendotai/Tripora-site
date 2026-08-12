@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/guides", label: "Cẩm nang" },
   { href: "/blog", label: "Blog" },
   { href: "/trips", label: "Lịch trình của tôi" },
+  { href: "/wishlist", label: "Yêu thích" },
 ];
 
 export function Navbar() {

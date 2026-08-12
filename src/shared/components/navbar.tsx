@@ -32,7 +32,13 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            nativeButton={false}
+            render={<Link href="/search" />}
+          >
             <Search className="h-4 w-4" />
             <span className="sr-only">Tìm kiếm</span>
           </Button>

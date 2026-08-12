@@ -7,6 +7,7 @@ import { getDestinations } from "@/features/destination/services/get-destination
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { WishlistButton } from "@/shared/components/wishlist-button";
 
 export default async function DestinationsPage({
   searchParams,
@@ -59,6 +60,10 @@ export default async function DestinationsPage({
                         fill
                         sizes="(min-width: 1024px) 33vw, 50vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <WishlistButton
+                        destinationId={destination.id}
+                        className="absolute right-3 top-3"
                       />
                     </div>
                     <div className="p-4">

@@ -9,6 +9,7 @@ import { ThemeToggle } from "./theme-toggle";
 const NAV_LINKS = [
   { href: "/destinations", label: "Điểm đến" },
   { href: "/hotels", label: "Khách sạn" },
+  { href: "/tours", label: "Tour" },
   { href: "/guides", label: "Cẩm nang" },
   { href: "/blog", label: "Blog" },
   { href: "/trips", label: "Lịch trình của tôi" },

@@ -1,5 +1,5 @@
 import { serverFetch } from "@/shared/services/server-fetch";
-import type { PaginatedProperties, PropertySort } from "../types/property.types";
+import type { PaginatedProperties, Property, PropertySort } from "../types/property.types";
 
 export function getProperties(params?: {
   q?: string;
@@ -15,4 +15,8 @@ export function getProperties(params?: {
   const query = search.toString();
 
   return serverFetch<PaginatedProperties>(`/properties${query ? `?${query}` : ""}`);
+}
+
+export function getPropertyBySlug(slug: string) {
+  return serverFetch<Property>(`/properties/${slug}`);
 }

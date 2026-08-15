@@ -1,5 +1,6 @@
 "use client";
 
+import { CalendarCheck, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogoutMutation } from "@/features/auth/api/auth.api";
@@ -44,7 +46,19 @@ export function AuthNavActions() {
           <span className="ml-2 text-sm font-medium">{user.firstName ?? user.email}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleLogout}>Đăng xuất</DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/profile" />}>
+            <UserRound className="size-4" />
+            Hồ sơ của tôi
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/my-bookings" />}>
+            <CalendarCheck className="size-4" />
+            Đặt chỗ của tôi
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+            <LogOut className="size-4" />
+            Đăng xuất
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );

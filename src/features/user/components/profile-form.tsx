@@ -1,14 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { CheckCircle2, Loader2, Pencil } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { saveSession } from "@/features/auth/services/auth-storage";
 import { setCredentials } from "@/features/auth/store/auth.slice";
+import type { AuthUser } from "@/features/auth/types/auth.types";
+import { useUploadImageMutation } from "@/features/upload/api/upload.api";
 import { useAppDispatch } from "@/shared/hooks/use-app-dispatch";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 import { useGetMeQuery, useUpdateMeMutation } from "../api/user.api";
@@ -33,9 +36,34 @@ export function ProfileForm() {
   const cachedUser = useAppSelector((state) => state.auth.user);
   const { data: user, isLoading, isError } = useGetMeQuery();
   const [updateMe, { isLoading: isSaving }] = useUpdateMeMutation();
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
   const [saved, setSaved] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const profile = user ?? cachedUser;
+
+  const applyUpdatedUser = (updated: AuthUser) => {
+    if (accessToken) {
+      dispatch(setCredentials({ accessToken, user: updated }));
+      saveSession(accessToken, updated);
+    }
+  };
+
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setAvatarError(null);
+    try {
+      const { url } = await uploadImage(file).unwrap();
+      const updated = await updateMe({ avatar: url }).unwrap();
+      applyUpdatedUser(updated);
+    } catch {
+      setAvatarError("Tải ảnh đại diện thất bại. Vui lòng thử lại.");
+    }
+  };
 
   const {
     register,
@@ -59,10 +87,7 @@ export function ProfileForm() {
   const onSubmit = async (values: ProfileFormValues) => {
     setSaved(false);
     const updated = await updateMe(values).unwrap();
-    if (accessToken) {
-      dispatch(setCredentials({ accessToken, user: updated }));
-      saveSession(accessToken, updated);
-    }
+    applyUpdatedUser(updated);
     reset(values);
     setSaved(true);
   };
@@ -82,9 +107,43 @@ export function ProfileForm() {
   return (
     <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
       <div className="flex flex-col items-center gap-3 rounded-[var(--radius-lg)] border border-border bg-card p-6 text-center lg:items-start lg:text-left">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-2xl font-semibold text-accent-foreground">
-          {initial}
-        </span>
+        <div className="relative">
+          {profile.avatar ? (
+            <Image
+              src={profile.avatar}
+              alt=""
+              width={64}
+              height={64}
+              className="h-16 w-16 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-2xl font-semibold text-accent-foreground">
+              {initial}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-colors hover:text-primary disabled:opacity-50"
+          >
+            {isUploading ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Pencil className="h-3.5 w-3.5" />
+            )}
+            <span className="sr-only">Đổi ảnh đại diện</span>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="hidden"
+            onChange={handleAvatarChange}
+            disabled={isUploading}
+          />
+        </div>
+        {avatarError && <p className="text-xs text-destructive">{avatarError}</p>}
         <div>
           <p className="font-semibold">
             {profile.firstName || profile.lastName

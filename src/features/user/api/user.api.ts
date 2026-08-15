@@ -4,6 +4,7 @@ import type { AuthUser } from "@/features/auth/types/auth.types";
 export interface UpdateProfileInput {
   firstName?: string;
   lastName?: string;
+  avatar?: string;
 }
 
 export const userApi = baseApi.injectEndpoints({

@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarCheck, LogOut, UserRound } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -40,9 +41,19 @@ export function AuthNavActions() {
         <DropdownMenuTrigger
           render={<Button variant="ghost" className="rounded-full pl-1.5 pr-3" />}
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">
-            {(user.firstName ?? user.email)[0]?.toUpperCase()}
-          </span>
+          {user.avatar ? (
+            <Image
+              src={user.avatar}
+              alt=""
+              width={28}
+              height={28}
+              className="h-7 w-7 rounded-full object-cover"
+            />
+          ) : (
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">
+              {(user.firstName ?? user.email)[0]?.toUpperCase()}
+            </span>
+          )}
           <span className="ml-2 text-sm font-medium">{user.firstName ?? user.email}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

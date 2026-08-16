@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, LogOut, UserRound } from "lucide-react";
+import { CalendarCheck, Heart, LogOut, Map, UserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -64,6 +64,14 @@ export function AuthNavActions() {
           <DropdownMenuItem render={<Link href="/my-bookings" />}>
             <CalendarCheck className="size-4" />
             Đặt chỗ của tôi
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/trips" />}>
+            <Map className="size-4" />
+            Lịch trình của tôi
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/wishlist" />}>
+            <Heart className="size-4" />
+            Yêu thích
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem variant="destructive" onClick={handleLogout}>

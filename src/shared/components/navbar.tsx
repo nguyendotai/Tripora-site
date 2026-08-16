@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Building2, Car, Compass, MapPin, Newspaper, Search, Ticket } from "lucide-react";
+import { BookOpen, Building2, Car, Compass, MapPin, Newspaper, Plane, Search, Ticket } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ const CATEGORY_LINKS = [
   { href: "/tours", label: "Tour", icon: Compass },
   { href: "/experiences", label: "Trải nghiệm", icon: Ticket },
   { href: "/transport", label: "Vận chuyển", icon: Car },
+  { href: "/flights", label: "Chuyến bay", icon: Plane },
   { href: "/guides", label: "Cẩm nang", icon: BookOpen },
   { href: "/blog", label: "Blog", icon: Newspaper },
 ];

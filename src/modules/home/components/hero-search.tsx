@@ -1,16 +1,26 @@
 "use client";
 
-import { Compass, MapPin, Search } from "lucide-react";
+import { Building2, Car, Compass, MapPin, Route, Search, Ticket } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
+
+const CATEGORIES = [
+  { value: "destinations", label: "Điểm đến", icon: MapPin },
+  { value: "hotels", label: "Khách sạn", icon: Building2 },
+  { value: "tours", label: "Tour", icon: Compass },
+  { value: "experiences", label: "Trải nghiệm", icon: Ticket },
+  { value: "transport", label: "Vận chuyển", icon: Car },
+  { value: "trip", label: "Lịch trình", icon: Route },
+];
 
 export function HeroSearch() {
   return (
@@ -60,36 +70,102 @@ export function HeroSearch() {
         animate="visible"
         variants={fadeUp}
         transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mx-auto -mt-16 max-w-3xl px-4 sm:-mt-20"
+        className="relative z-10 mx-auto -mt-16 max-w-4xl px-4 sm:-mt-20"
       >
         <div className="rounded-[var(--radius-xl)] border border-border bg-card p-3 shadow-[0_20px_60px_-15px_rgba(0,0,0,.35)] sm:p-4">
           <Tabs defaultValue="destinations">
-            <TabsList>
-              <TabsTrigger value="destinations">
-                <MapPin className="mr-1.5 h-4 w-4" /> Khám phá điểm đến
-              </TabsTrigger>
-              <TabsTrigger value="trip">
-                <Compass className="mr-1.5 h-4 w-4" /> Lập lịch trình
-              </TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="h-auto flex-nowrap gap-0.5 p-1">
+                {CATEGORIES.map((category) => (
+                  <TabsTrigger
+                    key={category.value}
+                    value={category.value}
+                    className="gap-1.5 px-3 py-1.5"
+                  >
+                    <category.icon className="h-4 w-4" /> {category.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
 
             <TabsContent value="destinations" className="mt-3">
-              <form
-                action="/destinations"
-                method="GET"
-                className="flex flex-col gap-2 sm:flex-row"
-              >
+              <form action="/destinations" method="GET" className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   name="q"
                   placeholder="Bạn muốn đi đâu? Ví dụ: Đà Nẵng, Hội An..."
                   className="h-12 rounded-full px-5"
                 />
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="h-12 shrink-0 rounded-full px-6"
-                >
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm kiếm
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="hotels" className="mt-3">
+              <form action="/hotels" method="GET" className="flex flex-col gap-2 sm:flex-row">
+                <Input
+                  name="q"
+                  placeholder="Tên khách sạn, thành phố..."
+                  className="h-12 rounded-full px-5"
+                />
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
+                  <Search className="mr-1.5 h-4 w-4" /> Tìm khách sạn
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="tours" className="mt-3">
+              <form action="/tours" method="GET" className="flex flex-col gap-2 sm:flex-row">
+                <Input
+                  name="q"
+                  placeholder="Tên tour, điểm đến..."
+                  className="h-12 rounded-full px-5"
+                />
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
+                  <Search className="mr-1.5 h-4 w-4" /> Tìm tour
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="experiences" className="mt-3">
+              <form action="/experiences" method="GET" className="flex flex-col gap-2 sm:flex-row">
+                <Input
+                  name="q"
+                  placeholder="Lặn biển, chèo thuyền, leo núi..."
+                  className="h-12 rounded-full px-5"
+                />
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
+                  <Search className="mr-1.5 h-4 w-4" /> Tìm trải nghiệm
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="transport" className="mt-3">
+              <form action="/transport" method="GET" className="flex flex-col gap-2 sm:flex-row">
+                <div className="flex-1 space-y-1 text-left">
+                  <Label htmlFor="hero-origin" className="sr-only">
+                    Điểm đón
+                  </Label>
+                  <Input
+                    id="hero-origin"
+                    name="origin"
+                    placeholder="Điểm đón"
+                    className="h-12 rounded-full px-5"
+                  />
+                </div>
+                <div className="flex-1 space-y-1 text-left">
+                  <Label htmlFor="hero-destination" className="sr-only">
+                    Điểm đến
+                  </Label>
+                  <Input
+                    id="hero-destination"
+                    name="destination"
+                    placeholder="Điểm đến"
+                    className="h-12 rounded-full px-5"
+                  />
+                </div>
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
+                  <Search className="mr-1.5 h-4 w-4" /> Tìm xe
                 </Button>
               </form>
             </TabsContent>

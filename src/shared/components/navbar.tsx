@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/hotels", label: "Khách sạn" },
   { href: "/tours", label: "Tour" },
   { href: "/experiences", label: "Trải nghiệm" },
+  { href: "/transport", label: "Vận chuyển" },
   { href: "/guides", label: "Cẩm nang" },
   { href: "/blog", label: "Blog" },
   { href: "/trips", label: "Lịch trình của tôi" },

@@ -14,8 +14,7 @@ import {
   useCreateTransportBookingMutation,
   useLazyListAvailableVehiclesForRouteQuery,
 } from "../api/transport-booking.api";
-import type { AvailableVehicleOption, TransportBooking } from "../types/transport-booking.types";
-import { TransportBookingConfirmation } from "./transport-booking-confirmation";
+import type { AvailableVehicleOption } from "../types/transport-booking.types";
 
 const VEHICLE_TYPE_LABELS: Record<string, string> = {
   CAR: "Xe 4 chỗ",
@@ -50,7 +49,6 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
   const [dateError, setDateError] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<AvailableVehicleOption | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<TransportBooking | null>(null);
 
   const [findVehicles, { data: options, isFetching: isSearching }] =
     useLazyListAvailableVehiclesForRouteQuery();
@@ -95,7 +93,7 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
       }).unwrap();
-      setConfirmedBooking(result);
+      window.location.assign(result.checkoutUrl);
     } catch (error) {
       const message =
         error && typeof error === "object" && "data" in error
@@ -104,10 +102,6 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
       setSubmitError(message ?? "Đặt xe thất bại. Vui lòng thử lại.");
     }
   };
-
-  if (confirmedBooking) {
-    return <TransportBookingConfirmation booking={confirmedBooking} />;
-  }
 
   return (
     <main className="flex-1">

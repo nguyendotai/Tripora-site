@@ -13,8 +13,6 @@ import {
   useCreateExperienceBookingMutation,
   useLazyCheckExperienceAvailabilityQuery,
 } from "../api/experience-booking.api";
-import type { ExperienceBooking } from "../types/experience-booking.types";
-import { ExperienceBookingConfirmation } from "./experience-booking-confirmation";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -40,7 +38,6 @@ export function ExperienceBookingForm({ experience }: { experience: Experience }
   const [departureDate, setDepartureDate] = useState(todayISO());
   const [dateError, setDateError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<ExperienceBooking | null>(null);
 
   const [checkAvailability, { data: availability, isFetching: isChecking }] =
     useLazyCheckExperienceAvailabilityQuery();
@@ -81,7 +78,7 @@ export function ExperienceBookingForm({ experience }: { experience: Experience }
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
       }).unwrap();
-      setConfirmedBooking(result);
+      window.location.assign(result.checkoutUrl);
     } catch (error) {
       const message =
         error && typeof error === "object" && "data" in error
@@ -90,10 +87,6 @@ export function ExperienceBookingForm({ experience }: { experience: Experience }
       setSubmitError(message ?? "Đặt experience thất bại. Vui lòng thử lại.");
     }
   };
-
-  if (confirmedBooking) {
-    return <ExperienceBookingConfirmation booking={confirmedBooking} />;
-  }
 
   return (
     <main className="flex-1">

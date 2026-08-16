@@ -10,6 +10,13 @@ export interface CreateBookingInput {
 
 export type BookingStatusFilter = "upcoming" | "completed" | "cancelled";
 
+/** V6: Booking tao ra o PENDING_PAYMENT, phai redirect sang checkoutUrl (Stripe Checkout)
+ * de hoan tat thanh toan thay vi hien confirmation ngay. */
+export interface CreateBookingResponse {
+  booking: Booking;
+  checkoutUrl: string;
+}
+
 export const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     checkAvailability: builder.query<
@@ -18,7 +25,7 @@ export const bookingApi = baseApi.injectEndpoints({
     >({
       query: (params) => ({ url: "/bookings/availability", params }),
     }),
-    createBooking: builder.mutation<Booking, CreateBookingInput>({
+    createBooking: builder.mutation<CreateBookingResponse, CreateBookingInput>({
       query: (body) => ({ url: "/bookings", method: "POST", body }),
       invalidatesTags: [{ type: "Booking", id: "LIST" }],
     }),

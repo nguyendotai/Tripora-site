@@ -13,8 +13,6 @@ import {
   useCreateTourBookingMutation,
   useLazyCheckTourAvailabilityQuery,
 } from "../api/tour-booking.api";
-import type { TourBooking } from "../types/tour-booking.types";
-import { TourBookingConfirmation } from "./tour-booking-confirmation";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -40,7 +38,6 @@ export function TourBookingForm({ tour }: { tour: Tour }) {
   const [departureDate, setDepartureDate] = useState(todayISO());
   const [dateError, setDateError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<TourBooking | null>(null);
 
   const [checkAvailability, { data: availability, isFetching: isChecking }] =
     useLazyCheckTourAvailabilityQuery();
@@ -81,7 +78,7 @@ export function TourBookingForm({ tour }: { tour: Tour }) {
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
       }).unwrap();
-      setConfirmedBooking(result);
+      window.location.assign(result.checkoutUrl);
     } catch (error) {
       const message =
         error && typeof error === "object" && "data" in error
@@ -90,10 +87,6 @@ export function TourBookingForm({ tour }: { tour: Tour }) {
       setSubmitError(message ?? "Đặt tour thất bại. Vui lòng thử lại.");
     }
   };
-
-  if (confirmedBooking) {
-    return <TourBookingConfirmation booking={confirmedBooking} />;
-  }
 
   return (
     <main className="flex-1">

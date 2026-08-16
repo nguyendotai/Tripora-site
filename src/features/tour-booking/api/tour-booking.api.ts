@@ -12,6 +12,13 @@ export interface CreateTourBookingInput {
 
 export type TourBookingStatusFilter = "upcoming" | "completed" | "cancelled";
 
+/** V6: Booking tao ra o PENDING_PAYMENT, phai redirect sang checkoutUrl (Stripe Checkout)
+ * de hoan tat thanh toan thay vi hien confirmation ngay. */
+export interface CreateTourBookingResponse {
+  booking: TourBooking;
+  checkoutUrl: string;
+}
+
 export const tourBookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     checkTourAvailability: builder.query<
@@ -20,7 +27,7 @@ export const tourBookingApi = baseApi.injectEndpoints({
     >({
       query: (params) => ({ url: "/tour-bookings/availability", params }),
     }),
-    createTourBooking: builder.mutation<TourBooking, CreateTourBookingInput>({
+    createTourBooking: builder.mutation<CreateTourBookingResponse, CreateTourBookingInput>({
       query: (body) => ({ url: "/tour-bookings", method: "POST", body }),
       invalidatesTags: [{ type: "TourBooking", id: "LIST" }],
     }),

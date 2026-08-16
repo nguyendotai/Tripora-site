@@ -12,6 +12,13 @@ export interface CreateExperienceBookingInput {
 
 export type ExperienceBookingStatusFilter = "upcoming" | "completed" | "cancelled";
 
+/** V6: Booking tao ra o PENDING_PAYMENT, phai redirect sang checkoutUrl (Stripe Checkout)
+ * de hoan tat thanh toan thay vi hien confirmation ngay. */
+export interface CreateExperienceBookingResponse {
+  booking: ExperienceBooking;
+  checkoutUrl: string;
+}
+
 export const experienceBookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     checkExperienceAvailability: builder.query<
@@ -20,7 +27,7 @@ export const experienceBookingApi = baseApi.injectEndpoints({
     >({
       query: (params) => ({ url: "/experience-bookings/availability", params }),
     }),
-    createExperienceBooking: builder.mutation<ExperienceBooking, CreateExperienceBookingInput>({
+    createExperienceBooking: builder.mutation<CreateExperienceBookingResponse, CreateExperienceBookingInput>({
       query: (body) => ({ url: "/experience-bookings", method: "POST", body }),
       invalidatesTags: [{ type: "ExperienceBooking", id: "LIST" }],
     }),

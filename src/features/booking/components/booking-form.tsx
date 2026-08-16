@@ -11,8 +11,6 @@ import { Label } from "@/components/ui/label";
 import type { Property } from "@/features/property/types/property.types";
 import type { Room } from "@/features/room/types/room.types";
 import { useCreateBookingMutation, useLazyCheckAvailabilityQuery } from "../api/booking.api";
-import type { Booking } from "../types/booking.types";
-import { BookingConfirmation } from "./booking-confirmation";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -45,7 +43,6 @@ export function BookingForm({ property, room }: { property: Property; room: Room
   const [checkOutDate, setCheckOutDate] = useState(tomorrowISO());
   const [dateError, setDateError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
 
   const [checkAvailability, { data: availability, isFetching: isChecking }] =
     useLazyCheckAvailabilityQuery();
@@ -84,7 +81,7 @@ export function BookingForm({ property, room }: { property: Property; room: Room
           phone: guest.phone || undefined,
         })),
       }).unwrap();
-      setConfirmedBooking(result);
+      window.location.assign(result.checkoutUrl);
     } catch (error) {
       const message =
         error && typeof error === "object" && "data" in error
@@ -93,10 +90,6 @@ export function BookingForm({ property, room }: { property: Property; room: Room
       setSubmitError(message ?? "Đặt phòng thất bại. Vui lòng thử lại.");
     }
   };
-
-  if (confirmedBooking) {
-    return <BookingConfirmation booking={confirmedBooking} />;
-  }
 
   return (
     <main className="flex-1">

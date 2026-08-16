@@ -13,6 +13,13 @@ export interface CreateTransportBookingInput {
   customerPhone?: string;
 }
 
+/** V6: Booking tao ra o PENDING_PAYMENT, phai redirect sang checkoutUrl (Stripe Checkout)
+ * de hoan tat thanh toan thay vi hien confirmation ngay. */
+export interface CreateTransportBookingResponse {
+  booking: TransportBooking;
+  checkoutUrl: string;
+}
+
 export const transportBookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     /**
@@ -51,7 +58,7 @@ export const transportBookingApi = baseApi.injectEndpoints({
         return { data: options };
       },
     }),
-    createTransportBooking: builder.mutation<TransportBooking, CreateTransportBookingInput>({
+    createTransportBooking: builder.mutation<CreateTransportBookingResponse, CreateTransportBookingInput>({
       query: (body) => ({ url: "/transport-bookings", method: "POST", body }),
       invalidatesTags: [{ type: "TransportBooking", id: "LIST" }],
     }),

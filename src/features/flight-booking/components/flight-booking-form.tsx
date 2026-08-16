@@ -13,8 +13,6 @@ import { useListFlightSeatsQuery } from "@/features/flight-seat/api/flight-seat.
 import type { FlightSeat } from "@/features/flight-seat/types/flight-seat.types";
 import { cn } from "@/lib/utils";
 import { useCreateFlightBookingMutation } from "../api/flight-booking.api";
-import type { FlightBooking } from "../types/flight-booking.types";
-import { FlightBookingConfirmation } from "./flight-booking-confirmation";
 
 function formatPrice(price: string) {
   return `${Number(price).toLocaleString("vi-VN")} VND`;
@@ -48,7 +46,6 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
   const [step, setStep] = useState<Step>("seats");
   const [selectedSeatIds, setSelectedSeatIds] = useState<string[]>([]);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<FlightBooking | null>(null);
 
   const {
     data: seats,
@@ -98,7 +95,7 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
       }).unwrap();
-      setConfirmedBooking(result);
+      window.location.assign(result.checkoutUrl);
     } catch (error) {
       const message =
         error && typeof error === "object" && "data" in error
@@ -107,10 +104,6 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
       setSubmitError(message ?? "Đặt vé thất bại. Vui lòng thử lại.");
     }
   };
-
-  if (confirmedBooking) {
-    return <FlightBookingConfirmation booking={confirmedBooking} />;
-  }
 
   return (
     <main className="flex-1">

@@ -1,12 +1,13 @@
 "use client";
 
-import { Building2, Car, Compass, MapPin, Route, Search, Ticket } from "lucide-react";
+import { Building2, Car, Compass, MapPin, Plane, Route, Search, Ticket } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { Airport } from "@/features/airport/types/airport.types";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -19,10 +20,11 @@ const CATEGORIES = [
   { value: "tours", label: "Tour", icon: Compass },
   { value: "experiences", label: "Trải nghiệm", icon: Ticket },
   { value: "transport", label: "Vận chuyển", icon: Car },
+  { value: "flights", label: "Chuyến bay", icon: Plane },
   { value: "trip", label: "Lịch trình", icon: Route },
 ];
 
-export function HeroSearch() {
+export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
   return (
     <section className="relative">
       <div className="relative h-[560px] w-full overflow-hidden sm:h-[620px]">
@@ -166,6 +168,48 @@ export function HeroSearch() {
                 </div>
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm xe
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="flights" className="mt-3">
+              <form action="/flights" method="GET" className="flex flex-col gap-2 sm:flex-row">
+                <div className="flex-1 space-y-1 text-left">
+                  <Label htmlFor="hero-departureAirportId" className="sr-only">
+                    Sân bay đi
+                  </Label>
+                  <select
+                    id="hero-departureAirportId"
+                    name="departureAirportId"
+                    className="h-12 w-full rounded-full border border-input bg-background px-5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  >
+                    <option value="">Sân bay đi</option>
+                    {airports.map((airport) => (
+                      <option key={airport.id} value={airport.id}>
+                        {airport.code} — {airport.city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1 space-y-1 text-left">
+                  <Label htmlFor="hero-arrivalAirportId" className="sr-only">
+                    Sân bay đến
+                  </Label>
+                  <select
+                    id="hero-arrivalAirportId"
+                    name="arrivalAirportId"
+                    className="h-12 w-full rounded-full border border-input bg-background px-5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                  >
+                    <option value="">Sân bay đến</option>
+                    {airports.map((airport) => (
+                      <option key={airport.id} value={airport.id}>
+                        {airport.code} — {airport.city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
+                  <Search className="mr-1.5 h-4 w-4" /> Tìm chuyến bay
                 </Button>
               </form>
             </TabsContent>

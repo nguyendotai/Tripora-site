@@ -34,9 +34,30 @@ function isUpcoming(booking: Booking) {
 }
 
 function displayStatus(booking: Booking): { label: string; variant: "default" | "secondary" | "destructive" } {
-  if (booking.status === "CANCELLED") return { label: "Đã huỷ", variant: "destructive" };
-  if (isUpcoming(booking)) return { label: "Sắp tới", variant: "default" };
-  return { label: "Đã hoàn tất", variant: "secondary" };
+  switch (booking.status) {
+    case "PENDING_PAYMENT":
+      return { label: "Chờ thanh toán", variant: "secondary" };
+    case "EXPIRED":
+      return { label: "Hết hạn thanh toán", variant: "destructive" };
+    case "CANCELLED":
+      return { label: "Đã huỷ", variant: "destructive" };
+    case "REFUND_PENDING":
+      return { label: "Đang hoàn tiền", variant: "secondary" };
+    case "REFUNDED":
+      return { label: "Đã hoàn tiền", variant: "secondary" };
+    default:
+      return isUpcoming(booking)
+        ? { label: "Sắp tới", variant: "default" }
+        : { label: "Đã hoàn tất", variant: "secondary" };
+  }
+}
+
+function isCancelledOrRefunding(booking: Booking) {
+  return (
+    booking.status === "CANCELLED" ||
+    booking.status === "REFUND_PENDING" ||
+    booking.status === "REFUNDED"
+  );
 }
 
 function canCancel(booking: Booking) {
@@ -89,6 +110,21 @@ function BookingCard({ booking }: { booking: Booking }) {
           </p>
         </div>
       </div>
+
+      {isCancelledOrRefunding(booking) && (
+        <p className="mt-4 border-t border-border pt-4 text-xs text-muted-foreground">
+          {booking.status === "REFUNDED"
+            ? "Đã hoàn tiền cho đơn này."
+            : booking.status === "REFUND_PENDING"
+              ? "Đang xử lý hoàn tiền cho đơn này."
+              : "Nếu đã thanh toán, tiền sẽ được hoàn theo chính sách huỷ đặt chỗ (tuỳ số ngày huỷ trước ngày nhận phòng)."}{" "}
+          Xem số tiền hoàn cụ thể tại{" "}
+          <Link href="/transactions" className="text-primary hover:underline">
+            Lịch sử giao dịch
+          </Link>
+          .
+        </p>
+      )}
 
       {canCancel(booking) && (
         <div className="mt-4 flex items-center gap-3 border-t border-border pt-4">

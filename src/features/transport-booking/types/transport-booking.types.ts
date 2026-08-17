@@ -22,7 +22,7 @@ export interface TransportBooking {
   customerPhone?: string | null;
   totalPrice: string;
   currency: string;
-  status: "CONFIRMED" | "CANCELLED";
+  status: "PENDING_PAYMENT" | "PAID" | "CONFIRMED" | "COMPLETED" | "EXPIRED" | "CANCELLED" | "REFUND_PENDING" | "REFUNDED";
   createdAt: string;
   updatedAt: string;
 }

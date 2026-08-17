@@ -23,6 +23,7 @@ const FOOTER_COLUMNS = [
     links: [
       { href: "/about", label: "Giới thiệu" },
       { href: "/contact", label: "Liên hệ" },
+      { href: "/become-partner", label: "Trở thành đối tác" },
     ],
   },
 ];

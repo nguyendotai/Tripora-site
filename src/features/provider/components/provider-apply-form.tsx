@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Pencil, ShieldCheck } from "lucide-react";
+import { FileText, Loader2, Pencil, ShieldCheck, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
@@ -83,6 +84,27 @@ function ProviderStatusCard({ provider }: { provider: Provider }) {
         </Badge>
       </div>
       <p className="mt-4 text-sm text-muted-foreground">{status.description}</p>
+
+      {provider.documents && provider.documents.length > 0 && (
+        <div className="mt-4 border-t border-border pt-4">
+          <p className="text-xs text-muted-foreground">Tài liệu đã nộp</p>
+          <ul className="mt-2 space-y-1.5">
+            {provider.documents.map((url, index) => (
+              <li key={url}>
+                <Link
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-sm text-primary hover:underline"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  Tài liệu {index + 1}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
@@ -98,10 +120,14 @@ export function ProviderApplyForm() {
   const { data: provider, isLoading, error } = useGetMyProviderQuery();
   const [applyProvider, { isLoading: isApplying }] = useApplyProviderMutation();
   const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+  const [uploadDocument, { isLoading: isUploadingDocument }] = useUploadImageMutation();
   const [logo, setLogo] = useState<string | null>(null);
   const [logoError, setLogoError] = useState<string | null>(null);
+  const [documents, setDocuments] = useState<string[]>([]);
+  const [documentError, setDocumentError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const documentInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -126,6 +152,24 @@ export function ProviderApplyForm() {
     }
   };
 
+  const handleDocumentChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setDocumentError(null);
+    try {
+      const { url } = await uploadDocument(file).unwrap();
+      setDocuments((prev) => [...prev, url]);
+    } catch {
+      setDocumentError("Tải tài liệu thất bại. Vui lòng thử lại.");
+    }
+  };
+
+  const removeDocument = (url: string) => {
+    setDocuments((prev) => prev.filter((doc) => doc !== url));
+  };
+
   const onSubmit = async (values: ApplyProviderFormValues) => {
     setSubmitError(null);
     try {
@@ -135,6 +179,7 @@ export function ProviderApplyForm() {
         contact: values.contact || undefined,
         description: values.description || undefined,
         logo: logo ?? undefined,
+        documents: documents.length > 0 ? documents : undefined,
       }).unwrap();
     } catch (submitErr) {
       setSubmitError(extractErrorMessage(submitErr) ?? "Gửi hồ sơ thất bại. Vui lòng thử lại.");
@@ -242,6 +287,62 @@ export function ProviderApplyForm() {
           placeholder="Giới thiệu ngắn về doanh nghiệp của bạn"
           {...register("description")}
         />
+      </div>
+
+      <div className="mt-4 space-y-1.5">
+        <Label>Tài liệu kinh doanh (tuỳ chọn)</Label>
+        <p className="text-xs text-muted-foreground">
+          Ảnh chụp/scan giấy phép kinh doanh hoặc chứng chỉ liên quan — giúp hồ sơ được duyệt nhanh hơn.
+        </p>
+
+        {documents.length > 0 && (
+          <ul className="mt-2 space-y-1.5">
+            {documents.map((url, index) => (
+              <li
+                key={url}
+                className="flex items-center justify-between gap-2 rounded-lg border border-border bg-secondary/40 px-2.5 py-1.5 text-sm"
+              >
+                <span className="flex items-center gap-1.5 text-foreground">
+                  <FileText className="h-3.5 w-3.5 text-muted-foreground" />
+                  Tài liệu {index + 1}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => removeDocument(url)}
+                  className="text-muted-foreground hover:text-destructive"
+                >
+                  <X className="h-3.5 w-3.5" />
+                  <span className="sr-only">Xoá tài liệu {index + 1}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-2 rounded-full"
+          onClick={() => documentInputRef.current?.click()}
+          disabled={isUploadingDocument}
+        >
+          {isUploadingDocument ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <FileText className="h-3.5 w-3.5" />
+          )}
+          {isUploadingDocument ? "Đang tải lên..." : "Thêm tài liệu"}
+        </Button>
+        <input
+          ref={documentInputRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          className="hidden"
+          onChange={handleDocumentChange}
+          disabled={isUploadingDocument}
+        />
+        {documentError && <p className="text-xs text-destructive">{documentError}</p>}
       </div>
 
       {submitError && <p className="mt-4 text-sm text-destructive">{submitError}</p>}

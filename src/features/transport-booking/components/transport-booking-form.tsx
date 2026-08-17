@@ -36,6 +36,7 @@ const customerSchema = z.object({
   customerName: z.string().min(1, "Vui lòng nhập họ tên"),
   customerEmail: z.string().email("Email không hợp lệ").optional().or(z.literal("")),
   customerPhone: z.string().optional(),
+  couponCode: z.string().optional(),
   numberOfPeople: z
     .string()
     .min(1, "Vui lòng nhập số người")
@@ -60,7 +61,13 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
     formState: { errors },
   } = useForm<CustomerFormValues>({
     resolver: zodResolver(customerSchema),
-    defaultValues: { customerName: "", customerEmail: "", customerPhone: "", numberOfPeople: "1" },
+    defaultValues: {
+      customerName: "",
+      customerEmail: "",
+      customerPhone: "",
+      couponCode: "",
+      numberOfPeople: "1",
+    },
   });
 
   const handleFindVehicles = () => {
@@ -92,6 +99,7 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
         customerName: values.customerName,
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
+        couponCode: values.couponCode || undefined,
       }).unwrap();
       window.location.assign(result.checkoutUrl);
     } catch (error) {
@@ -226,6 +234,10 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
                     <Label htmlFor="customerPhone">SĐT (tuỳ chọn)</Label>
                     <Input id="customerPhone" {...register("customerPhone")} />
                   </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="couponCode">Mã giảm giá (tuỳ chọn)</Label>
+                  <Input id="couponCode" placeholder="VD: WELCOME10" {...register("couponCode")} />
                 </div>
               </div>
             </section>

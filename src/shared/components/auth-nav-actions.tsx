@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, Heart, LogOut, Map, UserRound } from "lucide-react";
+import { CalendarCheck, Heart, LogOut, Map, Receipt, UserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -56,25 +56,48 @@ export function AuthNavActions() {
           )}
           <span className="ml-2 text-sm font-medium">{user.firstName ?? user.email}</span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem render={<Link href="/profile" />}>
+        <DropdownMenuContent align="end" className="w-60 p-1.5">
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/profile" />}
+          >
             <UserRound className="size-4" />
             Hồ sơ của tôi
           </DropdownMenuItem>
-          <DropdownMenuItem render={<Link href="/my-bookings" />}>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/my-bookings" />}
+          >
             <CalendarCheck className="size-4" />
             Đặt chỗ của tôi
           </DropdownMenuItem>
-          <DropdownMenuItem render={<Link href="/trips" />}>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/trips" />}
+          >
             <Map className="size-4" />
             Lịch trình của tôi
           </DropdownMenuItem>
-          <DropdownMenuItem render={<Link href="/wishlist" />}>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/wishlist" />}
+          >
             <Heart className="size-4" />
             Yêu thích
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/transactions" />}
+          >
+            <Receipt className="size-4" />
+            Lịch sử giao dịch
+          </DropdownMenuItem>
+          <DropdownMenuSeparator className="my-1.5" />
+          <DropdownMenuItem
+            variant="destructive"
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            onClick={handleLogout}
+          >
             <LogOut className="size-4" />
             Đăng xuất
           </DropdownMenuItem>

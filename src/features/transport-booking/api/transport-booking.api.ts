@@ -11,6 +11,7 @@ export interface CreateTransportBookingInput {
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;
+  couponCode?: string;
 }
 
 /** V6: Booking tao ra o PENDING_PAYMENT, phai redirect sang checkoutUrl (Stripe Checkout)

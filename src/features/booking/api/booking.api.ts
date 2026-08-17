@@ -6,6 +6,7 @@ export interface CreateBookingInput {
   checkInDate: string;
   checkOutDate: string;
   guests: GuestInput[];
+  couponCode?: string;
 }
 
 export type BookingStatusFilter = "upcoming" | "completed" | "cancelled";

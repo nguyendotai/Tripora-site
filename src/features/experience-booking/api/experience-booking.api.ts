@@ -8,6 +8,7 @@ export interface CreateExperienceBookingInput {
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;
+  couponCode?: string;
 }
 
 export type ExperienceBookingStatusFilter = "upcoming" | "completed" | "cancelled";

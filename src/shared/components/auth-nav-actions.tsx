@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, Heart, LogOut, Map, UserRound } from "lucide-react";
+import { CalendarCheck, Heart, LogOut, Map, Receipt, UserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -84,6 +84,13 @@ export function AuthNavActions() {
           >
             <Heart className="size-4" />
             Yêu thích
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/transactions" />}
+          >
+            <Receipt className="size-4" />
+            Lịch sử giao dịch
           </DropdownMenuItem>
           <DropdownMenuSeparator className="my-1.5" />
           <DropdownMenuItem

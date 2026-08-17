@@ -36,6 +36,7 @@ const formSchema = z.object({
   customerName: z.string().min(1, "Vui lòng nhập họ tên"),
   customerEmail: z.string().email("Email không hợp lệ").optional().or(z.literal("")),
   customerPhone: z.string().optional(),
+  couponCode: z.string().optional(),
   passengers: z.array(passengerSchema).min(1, "Chọn ít nhất 1 ghế"),
 });
 
@@ -61,7 +62,13 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { customerName: "", customerEmail: "", customerPhone: "", passengers: [] },
+    defaultValues: {
+      customerName: "",
+      customerEmail: "",
+      customerPhone: "",
+      couponCode: "",
+      passengers: [],
+    },
   });
   const { fields, replace } = useFieldArray({ control, name: "passengers" });
 
@@ -94,6 +101,7 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
         customerName: values.customerName,
         customerEmail: values.customerEmail || undefined,
         customerPhone: values.customerPhone || undefined,
+        couponCode: values.couponCode || undefined,
       }).unwrap();
       window.location.assign(result.checkoutUrl);
     } catch (error) {
@@ -258,6 +266,10 @@ export function FlightBookingForm({ flight, schedule }: { flight: Flight; schedu
                     <Label htmlFor="customerPhone">SĐT (tuỳ chọn)</Label>
                     <Input id="customerPhone" {...register("customerPhone")} />
                   </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="couponCode">Mã giảm giá (tuỳ chọn)</Label>
+                  <Input id="couponCode" placeholder="VD: WELCOME10" {...register("couponCode")} />
                 </div>
               </div>
             </section>

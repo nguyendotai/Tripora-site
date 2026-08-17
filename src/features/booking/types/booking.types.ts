@@ -32,7 +32,7 @@ export interface Booking {
   nights: number;
   totalPrice: string;
   currency: string;
-  status: "CONFIRMED" | "CANCELLED";
+  status: "PENDING_PAYMENT" | "PAID" | "CONFIRMED" | "COMPLETED" | "EXPIRED" | "CANCELLED" | "REFUND_PENDING" | "REFUNDED";
   createdAt: string;
   updatedAt: string;
   guests: Guest[];

@@ -29,10 +29,14 @@ function LoginForm() {
   } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (values: LoginFormValues) => {
-    const result = await login(values).unwrap();
-    dispatch(setCredentials(result));
-    saveSession(result.accessToken, result.user);
-    router.push(searchParams.get("returnTo") ?? "/");
+    try {
+      const result = await login(values).unwrap();
+      dispatch(setCredentials(result));
+      saveSession(result.accessToken, result.user);
+      router.push(searchParams.get("returnTo") ?? "/");
+    } catch {
+      // Sai email/mật khẩu — `error` từ useLoginMutation đã tự hiện thông báo bên dưới.
+    }
   };
 
   return (

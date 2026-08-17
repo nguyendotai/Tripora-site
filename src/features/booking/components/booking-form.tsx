@@ -41,6 +41,7 @@ type GuestsFormValues = z.infer<typeof guestsSchema>;
 export function BookingForm({ property, room }: { property: Property; room: Room }) {
   const [checkInDate, setCheckInDate] = useState(todayISO());
   const [checkOutDate, setCheckOutDate] = useState(tomorrowISO());
+  const [couponCode, setCouponCode] = useState("");
   const [dateError, setDateError] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -80,6 +81,7 @@ export function BookingForm({ property, room }: { property: Property; room: Room
           email: guest.email || undefined,
           phone: guest.phone || undefined,
         })),
+        couponCode: couponCode || undefined,
       }).unwrap();
       window.location.assign(result.checkoutUrl);
     } catch (error) {
@@ -226,6 +228,17 @@ export function BookingForm({ property, room }: { property: Property; room: Room
                   </div>
                 ))}
               </div>
+            </section>
+
+            <section className="rounded-[var(--radius-lg)] border border-border bg-card p-5">
+              <Label htmlFor="couponCode">Mã giảm giá (tuỳ chọn)</Label>
+              <Input
+                id="couponCode"
+                className="mt-1.5"
+                placeholder="VD: WELCOME10"
+                value={couponCode}
+                onChange={(event) => setCouponCode(event.target.value)}
+              />
             </section>
 
             {submitError && <p className="text-sm text-destructive">{submitError}</p>}

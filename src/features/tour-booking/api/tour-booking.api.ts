@@ -8,6 +8,7 @@ export interface CreateTourBookingInput {
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;
+  couponCode?: string;
 }
 
 export type TourBookingStatusFilter = "upcoming" | "completed" | "cancelled";

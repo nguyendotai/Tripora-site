@@ -7,6 +7,7 @@ export interface ApplyProviderInput {
   description?: string;
   logo?: string;
   contact?: string;
+  documents?: string[];
 }
 
 export const providerApi = baseApi.injectEndpoints({

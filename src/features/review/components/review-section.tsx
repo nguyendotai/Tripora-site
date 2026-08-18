@@ -13,6 +13,7 @@ import {
   useDeleteReviewMutation,
   useListReviewsQuery,
   useUpdateReviewMutation,
+  type ReviewTarget,
 } from "../api/review.api";
 import { reviewSchema, type ReviewFormValues } from "../schemas/review.schema";
 import { StarRating } from "./star-rating";
@@ -23,18 +24,19 @@ function reviewerName(review: { user?: { firstName?: string | null; lastName?: s
 }
 
 function ReviewForm({
-  destinationId,
+  target,
   defaultValues,
   reviewId,
   onDone,
 }: {
-  destinationId: string;
+  target: ReviewTarget;
   defaultValues?: ReviewFormValues;
   reviewId?: string;
   onDone?: () => void;
 }) {
   const [createReview, { isLoading: isCreating }] = useCreateReviewMutation();
   const [updateReview, { isLoading: isUpdating }] = useUpdateReviewMutation();
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const isLoading = isCreating || isUpdating;
 
   const {
@@ -51,12 +53,22 @@ function ReviewForm({
   const rating = watch("rating");
 
   const onSubmit = async (values: ReviewFormValues) => {
-    if (reviewId) {
-      await updateReview({ id: reviewId, destinationId, data: values }).unwrap();
-    } else {
-      await createReview({ destinationId, ...values }).unwrap();
+    setSubmitError(null);
+    try {
+      if (reviewId) {
+        await updateReview({ id: reviewId, target, data: values }).unwrap();
+      } else {
+        await createReview({ ...target, ...values }).unwrap();
+      }
+      onDone?.();
+    } catch (error) {
+      const status = (error as { status?: number })?.status;
+      setSubmitError(
+        status === 403
+          ? "Bạn cần đặt và hoàn tất ít nhất 1 lượt đặt chỗ ở đây trước khi đánh giá."
+          : "Không gửi được đánh giá. Vui lòng thử lại.",
+      );
     }
-    onDone?.();
   };
 
   return (
@@ -65,12 +77,9 @@ function ReviewForm({
         <StarRating value={rating} onChange={(v) => setValue("rating", v, { shouldValidate: true })} />
         {errors.rating && <p className="mt-1 text-xs text-destructive">{errors.rating.message}</p>}
       </div>
-      <Textarea
-        placeholder="Chia sẻ trải nghiệm của bạn tại điểm đến này..."
-        rows={3}
-        {...register("content")}
-      />
+      <Textarea placeholder="Chia sẻ trải nghiệm của bạn..." rows={3} {...register("content")} />
       {errors.content && <p className="text-xs text-destructive">{errors.content.message}</p>}
+      {submitError && <p className="text-xs text-destructive">{submitError}</p>}
       <div className="flex gap-2">
         <Button type="submit" disabled={isLoading} size="sm" className="rounded-full">
           {isLoading ? "Đang lưu..." : reviewId ? "Cập nhật đánh giá" : "Gửi đánh giá"}
@@ -85,11 +94,11 @@ function ReviewForm({
   );
 }
 
-export function ReviewSection({ destinationId }: { destinationId: string }) {
+export function ReviewSection({ target }: { target: ReviewTarget }) {
   const pathname = usePathname();
   const accessToken = useAppSelector((state) => state.auth.accessToken);
   const currentUserId = useAppSelector((state) => state.auth.user?.id);
-  const { data, isLoading } = useListReviewsQuery({ destinationId });
+  const { data, isLoading } = useListReviewsQuery(target);
   const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -119,7 +128,7 @@ export function ReviewSection({ destinationId }: { destinationId: string }) {
             <Link href={`/login?returnTo=${encodeURIComponent(pathname)}`} className="font-medium text-primary hover:underline">
               Đăng nhập
             </Link>{" "}
-            để viết đánh giá cho điểm đến này.
+            để viết đánh giá.
           </p>
         ) : ownReview && !isEditing ? (
           <div className="rounded-[var(--radius-lg)] border border-border bg-card p-4">
@@ -136,7 +145,7 @@ export function ReviewSection({ destinationId }: { destinationId: string }) {
                 variant="ghost"
                 size="sm"
                 disabled={isDeleting}
-                onClick={() => deleteReview({ id: ownReview.id, destinationId })}
+                onClick={() => deleteReview({ id: ownReview.id, target })}
               >
                 Xoá
               </Button>
@@ -144,13 +153,13 @@ export function ReviewSection({ destinationId }: { destinationId: string }) {
           </div>
         ) : ownReview && isEditing ? (
           <ReviewForm
-            destinationId={destinationId}
+            target={target}
             reviewId={ownReview.id}
             defaultValues={{ rating: ownReview.rating, content: ownReview.content ?? "" }}
             onDone={() => setIsEditing(false)}
           />
         ) : (
-          <ReviewForm destinationId={destinationId} />
+          <ReviewForm target={target} />
         )}
       </div>
 
@@ -158,7 +167,7 @@ export function ReviewSection({ destinationId }: { destinationId: string }) {
         {isLoading ? (
           <p className="text-sm text-muted-foreground">Đang tải đánh giá...</p>
         ) : otherReviews.length === 0 && !ownReview ? (
-          <p className="text-sm text-muted-foreground">Chưa có đánh giá nào cho điểm đến này.</p>
+          <p className="text-sm text-muted-foreground">Chưa có đánh giá nào.</p>
         ) : (
           otherReviews.map((review) => (
             <div key={review.id} className="border-b border-border pb-4 last:border-0">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { getPropertyBySlug } from "@/features/property/services/get-properties";
+import { ReviewSection } from "@/features/review/components/review-section";
 import { getRoomsByProperty } from "@/features/room/services/get-rooms";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
@@ -168,10 +169,7 @@ export default async function HotelDetailPage({
             </ScrollReveal>
 
             <ScrollReveal>
-              <h2 className="text-xl font-bold">Đánh giá</h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Tính năng đánh giá khách sạn chưa được hỗ trợ.
-              </p>
+              <ReviewSection target={{ propertyId: property.id }} />
             </ScrollReveal>
           </div>
 

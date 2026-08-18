@@ -76,7 +76,7 @@ export default async function DestinationDetailPage({
         </ScrollReveal>
 
         <ScrollReveal className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 lg:px-8">
-          <ReviewSection destinationId={destination.id} />
+          <ReviewSection target={{ destinationId: destination.id }} />
         </ScrollReveal>
       </main>
       <Footer />

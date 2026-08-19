@@ -1,0 +1,38 @@
+export interface PostAuthor {
+  id: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatar?: string | null;
+}
+
+export interface PostDestination {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface Post {
+  id: string;
+  userId: string;
+  destinationId?: string | null;
+  caption: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+  user: PostAuthor;
+  destination?: PostDestination | null;
+}
+
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  totalItems: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface PaginatedPosts {
+  items: Post[];
+  pagination: PaginationMeta;
+}

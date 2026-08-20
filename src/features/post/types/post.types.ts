@@ -3,6 +3,7 @@ export interface PostAuthor {
   firstName?: string | null;
   lastName?: string | null;
   avatar?: string | null;
+  _count?: { followers: number };
 }
 
 export interface PostDestination {

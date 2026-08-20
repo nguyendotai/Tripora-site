@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 import { useDeletePostMutation } from "../api/post.api";
 import type { Post } from "../types/post.types";
+import { FollowButton } from "./follow-button";
 import { LikeButton } from "./like-button";
 import { SaveButton } from "./save-button";
 
@@ -66,23 +67,31 @@ export function PostCard({ post }: { post: Post }) {
             )}
             <div>
               <p className="text-sm font-semibold leading-tight">{authorName(post.user)}</p>
-              <p className="text-xs text-muted-foreground">{formatDate(post.createdAt)}</p>
+              <p className="text-xs text-muted-foreground">
+                {formatDate(post.createdAt)}
+                {!!post.user._count?.followers && (
+                  <> · {post.user._count.followers} người theo dõi</>
+                )}
+              </p>
             </div>
           </div>
 
-          {isOwner && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 shrink-0 rounded-full text-muted-foreground hover:text-destructive"
-              disabled={isDeleting}
-              onClick={() => deletePost(post.id)}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Xoá bài viết</span>
-            </Button>
-          )}
+          <div className="flex shrink-0 items-center gap-2">
+            <FollowButton userId={post.userId} className="rounded-full" />
+            {isOwner && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full text-muted-foreground hover:text-destructive"
+                disabled={isDeleting}
+                onClick={() => deletePost(post.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Xoá bài viết</span>
+              </Button>
+            )}
+          </div>
         </div>
 
         <p className="mt-3 text-sm whitespace-pre-line text-foreground/90">{post.caption}</p>

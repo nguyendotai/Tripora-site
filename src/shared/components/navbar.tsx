@@ -15,7 +15,7 @@ const CATEGORY_LINKS = [
   { href: "/hotels", label: "Khách sạn", icon: Building2 },
   { href: "/tours", label: "Tour", icon: Compass },
   { href: "/experiences", label: "Trải nghiệm", icon: Ticket },
-  { href: "/transport", label: "Vận chuyển", icon: Car },
+  { href: "/transport", label: "Đặt xe", icon: Car },
   { href: "/flights", label: "Chuyến bay", icon: Plane },
   { href: "/guides", label: "Cẩm nang", icon: BookOpen },
   { href: "/blog", label: "Blog", icon: Newspaper },

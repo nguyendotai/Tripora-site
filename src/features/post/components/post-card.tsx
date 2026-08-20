@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 import { useDeletePostMutation } from "../api/post.api";
 import type { Post } from "../types/post.types";
+import { CommentSection } from "./comment-section";
 import { FollowButton } from "./follow-button";
 import { LikeButton } from "./like-button";
 import { SaveButton } from "./save-button";
@@ -109,6 +110,10 @@ export function PostCard({ post }: { post: Post }) {
         <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
           <LikeButton postId={post.id} likeCount={post._count?.likes ?? 0} />
           <SaveButton postId={post.id} />
+        </div>
+
+        <div className="mt-2">
+          <CommentSection postId={post.id} commentCount={post._count?.comments ?? 0} />
         </div>
       </div>
     </article>

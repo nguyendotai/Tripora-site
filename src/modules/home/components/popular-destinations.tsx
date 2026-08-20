@@ -3,15 +3,15 @@ import Link from "next/link";
 import type { Destination } from "@/features/destination/types/destination.types";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
-const TILE_CLASSNAMES = [
-  "md:col-span-2 md:row-span-2",
-  "",
-  "",
-  "md:col-span-2",
-  "",
-  "",
-];
 const TILE_DELAYS = [0, 0.06, 0.12, 0.06, 0.18, 0.24];
+
+/** Ca 2 tile "rong" (index 0 va 3) chi con y nghia khi con du tile ben canh de lap day hang —
+ * neu it hon 4 item thi cho spans full width luon, tranh khoang trong vo ly. */
+function tileClassName(index: number, total: number): string {
+  if (index === 0) return total >= 2 ? "md:col-span-2" : "md:col-span-4";
+  if (index === 3) return total >= 6 ? "md:col-span-2" : "md:col-span-4";
+  return "";
+}
 
 export function PopularDestinations({ destinations }: { destinations: Destination[] }) {
   if (destinations.length === 0) return null;
@@ -39,14 +39,14 @@ export function PopularDestinations({ destinations }: { destinations: Destinatio
         </Link>
       </ScrollReveal>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-2">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
         {tiles.map((destination, index) => (
           <ScrollReveal
             key={destination.id}
             delay={TILE_DELAYS[index]}
-            className={TILE_CLASSNAMES[index]}
+            className={tileClassName(index, tiles.length)}
           >
-            <DestinationTile destination={destination} tall={index === 0} />
+            <DestinationTile destination={destination} wide={index === 0 || index === 3} />
           </ScrollReveal>
         ))}
       </div>
@@ -56,16 +56,16 @@ export function PopularDestinations({ destinations }: { destinations: Destinatio
 
 function DestinationTile({
   destination,
-  tall = false,
+  wide = false,
 }: {
   destination: Destination;
-  tall?: boolean;
+  wide?: boolean;
 }) {
   return (
     <Link
       href={`/destinations/${destination.slug}`}
       className={`group relative block h-full w-full overflow-hidden rounded-[var(--radius-xl)] transition-transform duration-300 hover:-translate-y-1 ${
-        tall ? "aspect-[4/5] sm:aspect-auto" : "aspect-square sm:aspect-[4/3]"
+        wide ? "aspect-[4/3] sm:aspect-[16/9]" : "aspect-square sm:aspect-[4/3]"
       }`}
     >
       <Image

@@ -16,3 +16,7 @@ export function getDestinations(params?: { q?: string; page?: number; limit?: nu
 export function getDestinationBySlug(slug: string) {
   return serverFetch<Destination>(`/destinations/${slug}`);
 }
+
+export function getPopularDestinations(limit = 6) {
+  return serverFetch<Destination[]>(`/destinations/popular?limit=${limit}`);
+}

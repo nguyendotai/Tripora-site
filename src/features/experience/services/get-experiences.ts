@@ -20,3 +20,7 @@ export function getExperiences(params?: {
 export function getExperienceBySlug(slug: string) {
   return serverFetch<Experience>(`/experiences/${slug}`);
 }
+
+export function getPopularExperiences(limit = 6) {
+  return serverFetch<Experience[]>(`/experiences/popular?limit=${limit}`);
+}

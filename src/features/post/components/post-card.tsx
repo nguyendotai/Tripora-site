@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 import { useDeletePostMutation } from "../api/post.api";
 import type { Post } from "../types/post.types";
+import { LikeButton } from "./like-button";
+import { SaveButton } from "./save-button";
 
 function authorName(user: Post["user"]) {
   const name = [user.firstName, user.lastName].filter(Boolean).join(" ");
@@ -94,6 +96,11 @@ export function PostCard({ post }: { post: Post }) {
             {post.destination.name}
           </Link>
         )}
+
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
+          <LikeButton postId={post.id} likeCount={post._count?.likes ?? 0} />
+          <SaveButton postId={post.id} />
+        </div>
       </div>
     </article>
   );

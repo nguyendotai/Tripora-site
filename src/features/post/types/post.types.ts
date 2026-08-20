@@ -21,6 +21,7 @@ export interface Post {
   updatedAt: string;
   user: PostAuthor;
   destination?: PostDestination | null;
+  _count?: { likes: number };
 }
 
 export interface PaginationMeta {

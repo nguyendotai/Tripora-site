@@ -68,6 +68,7 @@ export const baseApi = createApi({
     "Post",
     "Like",
     "SavedPost",
+    "Follow",
   ],
   endpoints: () => ({}),
 });

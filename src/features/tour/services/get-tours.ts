@@ -20,3 +20,7 @@ export function getTours(params?: {
 export function getTourBySlug(slug: string) {
   return serverFetch<Tour>(`/tours/${slug}`);
 }
+
+export function getPopularTours(limit = 6) {
+  return serverFetch<Tour[]>(`/tours/popular?limit=${limit}`);
+}

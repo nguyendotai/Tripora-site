@@ -1,10 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Destination } from "@/features/destination/types/destination.types";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
-import { MOCK_DESTINATIONS } from "../data/mock-destinations";
 
-export function PopularDestinations() {
-  const [first, second, third, fourth, fifth, sixth] = MOCK_DESTINATIONS;
+const TILE_CLASSNAMES = [
+  "md:col-span-2 md:row-span-2",
+  "",
+  "",
+  "md:col-span-2",
+  "",
+  "",
+];
+const TILE_DELAYS = [0, 0.06, 0.12, 0.06, 0.18, 0.24];
+
+export function PopularDestinations({ destinations }: { destinations: Destination[] }) {
+  if (destinations.length === 0) return null;
+  const tiles = destinations.slice(0, 6);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -29,24 +40,15 @@ export function PopularDestinations() {
       </ScrollReveal>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-2">
-        <ScrollReveal delay={0} className="md:col-span-2 md:row-span-2">
-          <DestinationTile destination={first} tall />
-        </ScrollReveal>
-        <ScrollReveal delay={0.06}>
-          <DestinationTile destination={second} />
-        </ScrollReveal>
-        <ScrollReveal delay={0.12}>
-          <DestinationTile destination={third} />
-        </ScrollReveal>
-        <ScrollReveal delay={0.06} className="md:col-span-2">
-          <DestinationTile destination={fourth} />
-        </ScrollReveal>
-        <ScrollReveal delay={0.18}>
-          <DestinationTile destination={fifth} />
-        </ScrollReveal>
-        <ScrollReveal delay={0.24}>
-          <DestinationTile destination={sixth} />
-        </ScrollReveal>
+        {tiles.map((destination, index) => (
+          <ScrollReveal
+            key={destination.id}
+            delay={TILE_DELAYS[index]}
+            className={TILE_CLASSNAMES[index]}
+          >
+            <DestinationTile destination={destination} tall={index === 0} />
+          </ScrollReveal>
+        ))}
       </div>
     </section>
   );
@@ -56,7 +58,7 @@ function DestinationTile({
   destination,
   tall = false,
 }: {
-  destination: (typeof MOCK_DESTINATIONS)[number];
+  destination: Destination;
   tall?: boolean;
 }) {
   return (
@@ -67,7 +69,7 @@ function DestinationTile({
       }`}
     >
       <Image
-        src={`https://picsum.photos/seed/${destination.seed}/800/900`}
+        src={destination.images?.[0] ?? `https://picsum.photos/seed/${destination.slug}/800/900`}
         alt={destination.name}
         fill
         sizes="(min-width: 768px) 50vw, 50vw"
@@ -75,9 +77,9 @@ function DestinationTile({
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-4">
-        <p className="text-xs font-medium text-white/70">
-          {destination.country}
-        </p>
+        {destination.country && (
+          <p className="text-xs font-medium text-white/70">{destination.country}</p>
+        )}
         <p className="text-lg font-bold text-white">{destination.name}</p>
       </div>
     </Link>

@@ -20,3 +20,7 @@ export function getProperties(params?: {
 export function getPropertyBySlug(slug: string) {
   return serverFetch<Property>(`/properties/${slug}`);
 }
+
+export function getPopularProperties(limit = 6) {
+  return serverFetch<Property[]>(`/properties/popular?limit=${limit}`);
+}

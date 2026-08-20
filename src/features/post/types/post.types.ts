@@ -22,7 +22,7 @@ export interface Post {
   updatedAt: string;
   user: PostAuthor;
   destination?: PostDestination | null;
-  _count?: { likes: number };
+  _count?: { likes: number; comments: number };
 }
 
 export interface PaginationMeta {

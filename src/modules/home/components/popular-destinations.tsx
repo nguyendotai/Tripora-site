@@ -3,19 +3,16 @@ import Link from "next/link";
 import type { Destination } from "@/features/destination/types/destination.types";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
-const TILE_DELAYS = [0, 0.06, 0.12, 0.06, 0.18, 0.24];
-
-/** Ca 2 tile "rong" (index 0 va 3) chi con y nghia khi con du tile ben canh de lap day hang —
- * neu it hon 4 item thi cho spans full width luon, tranh khoang trong vo ly. */
-function tileClassName(index: number, total: number): string {
-  if (index === 0) return total >= 2 ? "md:col-span-2" : "md:col-span-4";
-  if (index === 3) return total >= 6 ? "md:col-span-2" : "md:col-span-4";
-  return "";
-}
+const MAX_TILES = 7;
 
 export function PopularDestinations({ destinations }: { destinations: Destination[] }) {
   if (destinations.length === 0) return null;
-  const tiles = destinations.slice(0, 6);
+  const tiles = destinations.slice(0, MAX_TILES);
+  // Hang tren nhieu hon hang duoi (mosaic 2 hang) — tu chia deu theo so luong that co, khong
+  // phu thuoc dung 7 tile nhu anh mau: it hon thi vong 1 rong hon, khong con hang 2 luon.
+  const splitAt = Math.ceil(tiles.length / 2);
+  const topRow = tiles.slice(0, splitAt);
+  const bottomRow = tiles.slice(splitAt);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -39,48 +36,61 @@ export function PopularDestinations({ destinations }: { destinations: Destinatio
         </Link>
       </ScrollReveal>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-        {tiles.map((destination, index) => (
-          <ScrollReveal
-            key={destination.id}
-            delay={TILE_DELAYS[index]}
-            className={tileClassName(index, tiles.length)}
-          >
-            <DestinationTile destination={destination} wide={index === 0 || index === 3} />
-          </ScrollReveal>
-        ))}
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <DestinationRow destinations={topRow} aspect="aspect-[3/4]" delayOffset={0} />
+        {bottomRow.length > 0 && (
+          <DestinationRow destinations={bottomRow} aspect="aspect-[3/2]" delayOffset={0.12} />
+        )}
       </div>
     </section>
   );
 }
 
-function DestinationTile({
-  destination,
-  wide = false,
+function DestinationRow({
+  destinations,
+  aspect,
+  delayOffset,
 }: {
-  destination: Destination;
-  wide?: boolean;
+  destinations: Destination[];
+  aspect: string;
+  delayOffset: number;
 }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-4">
+      {destinations.map((destination, index) => (
+        <ScrollReveal
+          key={destination.id}
+          delay={delayOffset + index * 0.06}
+          className="sm:min-w-0 sm:flex-1"
+        >
+          <DestinationTile destination={destination} aspect={aspect} />
+        </ScrollReveal>
+      ))}
+    </div>
+  );
+}
+
+function DestinationTile({ destination, aspect }: { destination: Destination; aspect: string }) {
   return (
     <Link
       href={`/destinations/${destination.slug}`}
-      className={`group relative block h-full w-full overflow-hidden rounded-[var(--radius-xl)] transition-transform duration-300 hover:-translate-y-1 ${
-        wide ? "aspect-[4/3] sm:aspect-[16/9]" : "aspect-square sm:aspect-[4/3]"
-      }`}
+      className={`group relative block w-full overflow-hidden rounded-[var(--radius-xl)] transition-transform duration-300 hover:-translate-y-1 ${aspect}`}
     >
       <Image
         src={destination.images?.[0] ?? `https://picsum.photos/seed/${destination.slug}/800/900`}
         alt={destination.name}
         fill
-        sizes="(min-width: 768px) 50vw, 50vw"
+        sizes="(min-width: 640px) 20vw, 50vw"
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 p-4">
+      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
         {destination.country && (
-          <p className="text-xs font-medium text-white/70">{destination.country}</p>
+          <p className="text-[11px] font-medium text-white/70 sm:text-xs">
+            {destination.country}
+          </p>
         )}
-        <p className="text-lg font-bold text-white">{destination.name}</p>
+        <p className="line-clamp-1 text-sm font-bold text-white sm:text-lg">{destination.name}</p>
       </div>
     </Link>
   );

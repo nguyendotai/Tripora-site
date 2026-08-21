@@ -15,6 +15,7 @@ import { FeaturedProperties } from "@/modules/home/components/featured-propertie
 import { FeaturedTours } from "@/modules/home/components/featured-tours";
 import { HeroSearch } from "@/modules/home/components/hero-search";
 import { PopularDestinations } from "@/modules/home/components/popular-destinations";
+import { RecommendedDestinations } from "@/modules/home/components/recommended-destinations";
 import { ReviewHighlights } from "@/modules/home/components/review-highlights";
 import { TravelGuides } from "@/modules/home/components/travel-guides";
 import { ValueProps } from "@/modules/home/components/value-props";
@@ -58,6 +59,7 @@ export default async function Home() {
         <FeaturedTours tours={popularTours ?? []} />
         <FeaturedExperiences experiences={popularExperiences ?? []} />
         <ActivePromotions promotions={activePromotions ?? []} />
+        <RecommendedDestinations />
         <TravelGuides />
         <ReviewHighlights reviews={reviewHighlights ?? []} />
         <CommunityHighlights posts={posts?.items ?? []} />

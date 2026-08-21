@@ -29,10 +29,11 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
     <section className="relative">
       <div className="relative h-[560px] w-full overflow-hidden sm:h-[620px]">
         <Image
-          src="https://picsum.photos/seed/tripora-hero/1600/900"
-          alt=""
+          src="https://images.unsplash.com/photo-1603852452378-a4e8d84324a2?w=1600&h=900&fit=crop&q=80&auto=format"
+          alt="Cầu Vàng, Bà Nà Hills, Đà Nẵng"
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         <div

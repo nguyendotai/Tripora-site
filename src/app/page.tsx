@@ -34,7 +34,7 @@ export default async function Home() {
     posts,
   ] = await Promise.all([
     getAirports(),
-    getPopularDestinations(),
+    getPopularDestinations(7),
     getPopularProperties(),
     getPopularTours(),
     getPopularExperiences(),

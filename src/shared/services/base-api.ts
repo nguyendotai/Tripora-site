@@ -73,6 +73,8 @@ export const baseApi = createApi({
     "SavedPost",
     "Follow",
     "Comment",
+    "Conversation",
+    "Message",
   ],
   endpoints: () => ({}),
 });

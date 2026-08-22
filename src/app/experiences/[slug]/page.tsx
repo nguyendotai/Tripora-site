@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import { getExperienceBySlug } from "@/features/experience/services/get-experiences";
 import { getExperienceSchedule } from "@/features/experience-schedule/services/get-experience-schedule";
 import { Footer } from "@/shared/components/footer";
@@ -207,6 +208,8 @@ export default async function ExperienceDetailPage({
                 </p>
               </div>
             )}
+
+            <ContactProviderCard provider={experience.provider} />
           </div>
         </div>
       </main>

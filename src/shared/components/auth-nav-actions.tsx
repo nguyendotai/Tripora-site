@@ -1,6 +1,16 @@
 "use client";
 
-import { Bookmark, Building2, CalendarCheck, Heart, LogOut, Map, Receipt, UserRound } from "lucide-react";
+import {
+  Bookmark,
+  Building2,
+  CalendarCheck,
+  Heart,
+  LogOut,
+  Map,
+  MessageCircle,
+  Receipt,
+  UserRound,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -91,6 +101,13 @@ export function AuthNavActions() {
           >
             <Bookmark className="size-4" />
             Bài viết đã lưu
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"
+            render={<Link href="/messages" />}
+          >
+            <MessageCircle className="size-4" />
+            Tin nhắn
           </DropdownMenuItem>
           <DropdownMenuItem
             className="gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2.5"

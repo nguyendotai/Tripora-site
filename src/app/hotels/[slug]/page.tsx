@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
+import { TrackView } from "@/features/analytics-event/components/track-view";
 import { getPropertyBySlug } from "@/features/property/services/get-properties";
 import { ReviewSection } from "@/features/review/components/review-section";
 import { getRoomsByProperty } from "@/features/room/services/get-rooms";
@@ -36,6 +37,7 @@ export default async function HotelDetailPage({
   return (
     <>
       <Navbar />
+      <TrackView entityType="property" entityId={property.id} />
       <main className="flex-1">
         <div className="relative h-[360px] w-full overflow-hidden sm:h-[440px]">
           <Image

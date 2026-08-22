@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Airport } from "@/features/airport/types/airport.types";
+import { trackSearchBeacon } from "@/shared/services/analytics";
+import { useAppSelector } from "@/shared/hooks/use-app-selector";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -25,6 +27,18 @@ const CATEGORIES = [
 ];
 
 export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
+  const userId = useAppSelector((state) => state.auth.user?.id);
+
+  // V9 vong 4 — khong preventDefault, form van dieu huong GET binh thuong; chi ban 1 beacon
+  // ghi nhan tu khoa tim kiem truoc khi trang chuyen huong.
+  const handleSearchSubmit =
+    (entityType: string) => (event: React.FormEvent<HTMLFormElement>) => {
+      const query = new FormData(event.currentTarget).get("q");
+      if (typeof query === "string") {
+        trackSearchBeacon({ query, entityType, userId });
+      }
+    };
+
   return (
     <section className="relative">
       <div className="relative h-[560px] w-full overflow-hidden sm:h-[620px]">
@@ -92,7 +106,12 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
             </div>
 
             <TabsContent value="destinations" className="mt-3">
-              <form action="/destinations" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <form
+                action="/destinations"
+                method="GET"
+                onSubmit={handleSearchSubmit("destination")}
+                className="flex flex-col gap-2 sm:flex-row"
+              >
                 <Input
                   name="q"
                   placeholder="Bạn muốn đi đâu? Ví dụ: Đà Nẵng, Hội An..."
@@ -105,7 +124,12 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
             </TabsContent>
 
             <TabsContent value="hotels" className="mt-3">
-              <form action="/hotels" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <form
+                action="/hotels"
+                method="GET"
+                onSubmit={handleSearchSubmit("property")}
+                className="flex flex-col gap-2 sm:flex-row"
+              >
                 <Input
                   name="q"
                   placeholder="Tên khách sạn, thành phố..."
@@ -118,7 +142,12 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
             </TabsContent>
 
             <TabsContent value="tours" className="mt-3">
-              <form action="/tours" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <form
+                action="/tours"
+                method="GET"
+                onSubmit={handleSearchSubmit("tour")}
+                className="flex flex-col gap-2 sm:flex-row"
+              >
                 <Input
                   name="q"
                   placeholder="Tên tour, điểm đến..."
@@ -131,7 +160,12 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
             </TabsContent>
 
             <TabsContent value="experiences" className="mt-3">
-              <form action="/experiences" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <form
+                action="/experiences"
+                method="GET"
+                onSubmit={handleSearchSubmit("experience")}
+                className="flex flex-col gap-2 sm:flex-row"
+              >
                 <Input
                   name="q"
                   placeholder="Lặn biển, chèo thuyền, leo núi..."

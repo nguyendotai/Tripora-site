@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
+import { TrackView } from "@/features/analytics-event/components/track-view";
 import { getExperienceBySlug } from "@/features/experience/services/get-experiences";
 import { getExperienceSchedule } from "@/features/experience-schedule/services/get-experience-schedule";
 import { Footer } from "@/shared/components/footer";
@@ -51,6 +52,7 @@ export default async function ExperienceDetailPage({
   return (
     <>
       <Navbar />
+      <TrackView entityType="experience" entityId={experience.id} />
       <main className="flex-1">
         <div className="relative h-[360px] w-full overflow-hidden sm:h-[440px]">
           <Image

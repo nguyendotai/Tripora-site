@@ -10,6 +10,7 @@ export interface TransportRoute {
   status: "PENDING" | "APPROVED" | "REJECTED";
   createdAt: string;
   updatedAt: string;
+  provider?: { id: string; name: string; userId: string } | null;
 }
 
 export interface PaginationMeta {

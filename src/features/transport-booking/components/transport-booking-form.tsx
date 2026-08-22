@@ -8,6 +8,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import type { TransportRoute } from "@/features/transport-route/types/transport-route.types";
 import { cn } from "@/lib/utils";
 import {
@@ -192,6 +193,10 @@ export function TransportBookingForm({ route }: { route: TransportRoute }) {
               </div>
             ))}
         </section>
+
+        <div className="mt-6">
+          <ContactProviderCard provider={route.provider} />
+        </div>
 
         {selectedOption && (
           <form onSubmit={handleSubmit(onSubmitCustomer)} className="mt-6 space-y-4">

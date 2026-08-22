@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import { getPropertyBySlug } from "@/features/property/services/get-properties";
 import { ReviewSection } from "@/features/review/components/review-section";
 import { getRoomsByProperty } from "@/features/room/services/get-rooms";
@@ -204,6 +205,8 @@ export default async function HotelDetailPage({
                 </p>
               )}
             </div>
+
+            <ContactProviderCard provider={property.provider} />
           </div>
         </div>
       </main>

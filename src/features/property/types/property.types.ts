@@ -17,6 +17,7 @@ export interface Property {
   createdAt: string;
   updatedAt: string;
   destination?: { id: string; name: string; slug: string } | null;
+  provider?: { id: string; name: string; userId: string } | null;
   fromPrice?: string | null;
 }
 

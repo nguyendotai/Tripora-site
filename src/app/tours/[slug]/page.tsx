@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import { getTourBySlug } from "@/features/tour/services/get-tours";
 import { getTourItinerary } from "@/features/tour-itinerary/services/get-tour-itinerary";
 import { getTourSchedule } from "@/features/tour-schedule/services/get-tour-schedule";
@@ -247,6 +248,8 @@ export default async function TourDetailPage({
                 </p>
               </div>
             )}
+
+            <ContactProviderCard provider={tour.provider} />
           </div>
         </div>
       </main>

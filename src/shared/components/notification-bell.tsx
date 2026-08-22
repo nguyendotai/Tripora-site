@@ -17,6 +17,7 @@ import {
   useMarkNotificationAsReadMutation,
 } from "@/features/notification/api/notification.api";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
+import { useNotificationSocket } from "@/shared/services/socket";
 
 function timeAgo(iso: string) {
   const diffMs = Date.now() - new Date(iso).getTime();
@@ -31,6 +32,7 @@ function timeAgo(iso: string) {
 
 export function NotificationBell() {
   const accessToken = useAppSelector((state) => state.auth.accessToken);
+  useNotificationSocket();
   const { data } = useListNotificationsQuery(
     { limit: 10 },
     { skip: !accessToken, pollingInterval: 60000 },

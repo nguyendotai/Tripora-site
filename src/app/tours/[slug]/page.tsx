@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
+import { TrackView } from "@/features/analytics-event/components/track-view";
 import { getTourBySlug } from "@/features/tour/services/get-tours";
 import { getTourItinerary } from "@/features/tour-itinerary/services/get-tour-itinerary";
 import { getTourSchedule } from "@/features/tour-schedule/services/get-tour-schedule";
@@ -56,6 +57,7 @@ export default async function TourDetailPage({
   return (
     <>
       <Navbar />
+      <TrackView entityType="tour" entityId={tour.id} />
       <main className="flex-1">
         <div className="relative h-[360px] w-full overflow-hidden sm:h-[440px]">
           <Image

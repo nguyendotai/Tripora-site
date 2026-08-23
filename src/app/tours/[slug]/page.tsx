@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import { TrackView } from "@/features/analytics-event/components/track-view";
+import { ReviewSection } from "@/features/review/components/review-section";
 import { getTourBySlug } from "@/features/tour/services/get-tours";
 import { getTourItinerary } from "@/features/tour-itinerary/services/get-tour-itinerary";
 import { getTourSchedule } from "@/features/tour-schedule/services/get-tour-schedule";
@@ -188,10 +189,7 @@ export default async function TourDetailPage({
             </ScrollReveal>
 
             <ScrollReveal>
-              <h2 className="text-xl font-bold">Đánh giá</h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Tính năng đánh giá tour chưa được hỗ trợ.
-              </p>
+              <ReviewSection target={{ tourId: tour.id }} />
             </ScrollReveal>
           </div>
 

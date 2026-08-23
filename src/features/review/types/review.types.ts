@@ -5,6 +5,9 @@ export interface Review {
   userId: string;
   destinationId?: string | null;
   propertyId?: string | null;
+  tourId?: string | null;
+  experienceId?: string | null;
+  flightId?: string | null;
   rating: number;
   content?: string | null;
   createdAt: string;
@@ -36,4 +39,7 @@ export interface ReviewHighlight {
   };
   property: { id: string; name: string; slug: string } | null;
   destination: { id: string; name: string; slug: string } | null;
+  tour: { id: string; title: string; slug: string } | null;
+  experience: { id: string; title: string; slug: string } | null;
+  flight: { id: string; flightNumber: string } | null;
 }

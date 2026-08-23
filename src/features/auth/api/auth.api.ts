@@ -9,10 +9,18 @@ export const authApi = baseApi.injectEndpoints({
     register: builder.mutation<AuthResponse, RegisterRequest>({
       query: (body) => ({ url: "/auth/register", method: "POST", body }),
     }),
+    googleLogin: builder.mutation<AuthResponse, { idToken: string }>({
+      query: (body) => ({ url: "/auth/google", method: "POST", body }),
+    }),
     logout: builder.mutation<void, void>({
       query: () => ({ url: "/auth/logout", method: "POST" }),
     }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGoogleLoginMutation,
+  useLogoutMutation,
+} = authApi;

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getDestinations } from "@/features/destination/services/get-destinations";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 import { WishlistButton } from "@/shared/components/wishlist-button";
@@ -28,12 +29,12 @@ export default async function DestinationsPage({
             Khám phá tất cả điểm đến trên Tripora.
           </p>
 
-          <form method="GET" className="mt-6 flex max-w-md gap-2">
+          <GetSearchForm action="/destinations" className="mt-6 flex max-w-md gap-2">
             <Input name="q" defaultValue={params.q} placeholder="Tìm theo tên..." />
             <Button type="submit" size="icon" className="shrink-0 rounded-full">
               <Search className="h-4 w-4" />
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!result || result.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

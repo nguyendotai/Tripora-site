@@ -3,11 +3,13 @@
 import { Building2, Car, Compass, MapPin, Plane, Route, Search, Ticket } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Airport } from "@/features/airport/types/airport.types";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { trackSearchBeacon } from "@/shared/services/analytics";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 
@@ -29,15 +31,15 @@ const CATEGORIES = [
 export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
   const userId = useAppSelector((state) => state.auth.user?.id);
 
-  // V9 vong 4 — khong preventDefault, form van dieu huong GET binh thuong; chi ban 1 beacon
-  // ghi nhan tu khoa tim kiem truoc khi trang chuyen huong.
-  const handleSearchSubmit =
-    (entityType: string) => (event: React.FormEvent<HTMLFormElement>) => {
-      const query = new FormData(event.currentTarget).get("q");
-      if (typeof query === "string") {
-        trackSearchBeacon({ query, entityType, userId });
-      }
-    };
+  // V9 vong 4 — ban 1 beacon ghi nhan tu khoa tim kiem truoc khi GetSearchForm dieu huong
+  // client-side (khong con la native GET reload trang, nhung van giu sendBeacon vi da hoat dong
+  // dung, khong can doi sang RTK Query).
+  const handleSearchSubmit = (entityType: string) => (formData: FormData) => {
+    const query = formData.get("q");
+    if (typeof query === "string") {
+      trackSearchBeacon({ query, entityType, userId });
+    }
+  };
 
   return (
     <section className="relative">
@@ -106,10 +108,9 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
             </div>
 
             <TabsContent value="destinations" className="mt-3">
-              <form
+              <GetSearchForm
                 action="/destinations"
-                method="GET"
-                onSubmit={handleSearchSubmit("destination")}
+                onSubmitExtra={handleSearchSubmit("destination")}
                 className="flex flex-col gap-2 sm:flex-row"
               >
                 <Input
@@ -120,14 +121,13 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm kiếm
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="hotels" className="mt-3">
-              <form
+              <GetSearchForm
                 action="/hotels"
-                method="GET"
-                onSubmit={handleSearchSubmit("property")}
+                onSubmitExtra={handleSearchSubmit("property")}
                 className="flex flex-col gap-2 sm:flex-row"
               >
                 <Input
@@ -138,14 +138,13 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm khách sạn
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="tours" className="mt-3">
-              <form
+              <GetSearchForm
                 action="/tours"
-                method="GET"
-                onSubmit={handleSearchSubmit("tour")}
+                onSubmitExtra={handleSearchSubmit("tour")}
                 className="flex flex-col gap-2 sm:flex-row"
               >
                 <Input
@@ -156,14 +155,13 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm tour
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="experiences" className="mt-3">
-              <form
+              <GetSearchForm
                 action="/experiences"
-                method="GET"
-                onSubmit={handleSearchSubmit("experience")}
+                onSubmitExtra={handleSearchSubmit("experience")}
                 className="flex flex-col gap-2 sm:flex-row"
               >
                 <Input
@@ -174,11 +172,11 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm trải nghiệm
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="transport" className="mt-3">
-              <form action="/transport" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <GetSearchForm action="/transport" className="flex flex-col gap-2 sm:flex-row">
                 <div className="flex-1 space-y-1 text-left">
                   <Label htmlFor="hero-origin" className="sr-only">
                     Điểm đón
@@ -204,11 +202,11 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm xe
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="flights" className="mt-3">
-              <form action="/flights" method="GET" className="flex flex-col gap-2 sm:flex-row">
+              <GetSearchForm action="/flights" className="flex flex-col gap-2 sm:flex-row">
                 <div className="flex-1 space-y-1 text-left">
                   <Label htmlFor="hero-departureAirportId" className="sr-only">
                     Sân bay đi
@@ -246,7 +244,7 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                 <Button type="submit" size="lg" className="h-12 shrink-0 rounded-full px-6">
                   <Search className="mr-1.5 h-4 w-4" /> Tìm chuyến bay
                 </Button>
-              </form>
+              </GetSearchForm>
             </TabsContent>
 
             <TabsContent value="trip" className="mt-3">
@@ -259,7 +257,7 @@ export function HeroSearch({ airports = [] }: { airports?: Airport[] }) {
                   size="lg"
                   className="shrink-0 rounded-full px-6"
                   nativeButton={false}
-                  render={<a href="/trips/new" />}
+                  render={<Link href="/trips/new" />}
                 >
                   Tạo lịch trình
                 </Button>

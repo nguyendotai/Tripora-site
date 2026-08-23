@@ -8,6 +8,7 @@ import { getBlogPosts } from "@/features/blog/services/get-blog-posts";
 import { getDestinations } from "@/features/destination/services/get-destinations";
 import { getTravelGuides } from "@/features/travel-guide/services/get-travel-guides";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -99,7 +100,7 @@ export default async function SearchPage({
             Tìm điểm đến, cẩm nang và bài viết blog trên Tripora.
           </p>
 
-          <form method="GET" className="mt-6 flex max-w-md gap-2">
+          <GetSearchForm action="/search" className="mt-6 flex max-w-md gap-2">
             <Input
               name="q"
               defaultValue={query}
@@ -109,7 +110,7 @@ export default async function SearchPage({
             <Button type="submit" size="icon" className="shrink-0 rounded-full">
               <SearchIcon className="h-4 w-4" />
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!query ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

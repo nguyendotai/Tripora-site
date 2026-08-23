@@ -7,6 +7,7 @@ import { getDestinations } from "@/features/destination/services/get-destination
 import { getProperties } from "@/features/property/services/get-properties";
 import type { PropertySort } from "@/features/property/types/property.types";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -60,8 +61,8 @@ export default async function HotelsPage({
             Tìm khách sạn phù hợp cho chuyến đi tiếp theo của bạn.
           </p>
 
-          <form
-            method="GET"
+          <GetSearchForm
+            action="/hotels"
             className="mt-6 grid gap-3 rounded-[var(--radius-lg)] border border-border bg-card p-4 sm:grid-cols-[1.5fr_1fr_1fr_auto] sm:items-end"
           >
             <div className="space-y-1.5">
@@ -112,7 +113,7 @@ export default async function HotelsPage({
               <Search className="h-4 w-4" />
               Tìm
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!result || result.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

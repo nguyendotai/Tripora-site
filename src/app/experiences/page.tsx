@@ -7,6 +7,7 @@ import { getDestinations } from "@/features/destination/services/get-destination
 import { getExperiences } from "@/features/experience/services/get-experiences";
 import type { ExperienceSort } from "@/features/experience/types/experience.types";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -60,8 +61,8 @@ export default async function ExperiencesPage({
             Các hoạt động, lớp học và trải nghiệm địa phương cho chuyến đi của bạn.
           </p>
 
-          <form
-            method="GET"
+          <GetSearchForm
+            action="/experiences"
             className="mt-6 grid gap-3 rounded-[var(--radius-lg)] border border-border bg-card p-4 sm:grid-cols-[1.5fr_1fr_1fr_auto] sm:items-end"
           >
             <div className="space-y-1.5">
@@ -112,7 +113,7 @@ export default async function ExperiencesPage({
               <Search className="h-4 w-4" />
               Tìm
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!result || result.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

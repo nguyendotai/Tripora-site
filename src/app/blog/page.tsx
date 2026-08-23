@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getBlogPosts } from "@/features/blog/services/get-blog-posts";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -27,12 +28,12 @@ export default async function BlogPage({
             Câu chuyện, cảm hứng và góc nhìn về du lịch.
           </p>
 
-          <form method="GET" className="mt-6 flex max-w-md gap-2">
+          <GetSearchForm action="/blog" className="mt-6 flex max-w-md gap-2">
             <Input name="q" defaultValue={params.q} placeholder="Tìm theo tiêu đề..." />
             <Button type="submit" size="icon" className="shrink-0 rounded-full">
               <Search className="h-4 w-4" />
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!result || result.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

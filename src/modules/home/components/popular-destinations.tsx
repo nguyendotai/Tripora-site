@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Destination } from "@/features/destination/types/destination.types";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
 const MAX_TILES = 7;
@@ -77,7 +78,7 @@ function DestinationTile({ destination, aspect }: { destination: Destination; as
       className={`group relative block w-full overflow-hidden rounded-[var(--radius-xl)] transition-transform duration-300 hover:-translate-y-1 ${aspect}`}
     >
       <Image
-        src={destination.images?.[0] ?? `https://picsum.photos/seed/${destination.slug}/800/900`}
+        src={getImageOrDefault(destination.images, "destination", { w: 800, h: 900 })}
         alt={destination.name}
         fill
         sizes="(min-width: 640px) 20vw, 50vw"

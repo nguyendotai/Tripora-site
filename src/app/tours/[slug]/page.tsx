@@ -12,6 +12,7 @@ import { getTourSchedule } from "@/features/tour-schedule/services/get-tour-sche
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -50,8 +51,7 @@ export default async function TourDetailPage({
 
   const upcomingDepartures = (schedule ?? []).filter((row) => row.available > 0);
 
-  const heroImage =
-    tour.images?.[0] ?? `https://picsum.photos/seed/tour-${tour.slug}/1600/900`;
+  const heroImage = getImageOrDefault(tour.images, "tour", { w: 1600, h: 900 });
   const galleryImages = tour.images?.slice(1) ?? [];
 
   return (

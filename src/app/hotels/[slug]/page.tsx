@@ -11,6 +11,7 @@ import { getRoomsByProperty } from "@/features/room/services/get-rooms";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -30,8 +31,7 @@ export default async function HotelDetailPage({
 
   const rooms = (await getRoomsByProperty(property.id)) ?? [];
 
-  const heroImage =
-    property.images?.[0] ?? `https://picsum.photos/seed/hotel-${property.slug}/1600/900`;
+  const heroImage = getImageOrDefault(property.images, "hotel", { w: 1600, h: 900 });
   const galleryImages = property.images?.slice(1) ?? [];
 
   return (
@@ -128,10 +128,7 @@ export default async function HotelDetailPage({
                     >
                       <div className="relative hidden h-24 w-32 shrink-0 overflow-hidden rounded-[var(--radius-md)] sm:block">
                         <Image
-                          src={
-                            room.images?.[0] ??
-                            `https://picsum.photos/seed/room-${room.id}/300/200`
-                          }
+                          src={getImageOrDefault(room.images, "room", { w: 300, h: 200 })}
                           alt={room.name}
                           fill
                           sizes="128px"

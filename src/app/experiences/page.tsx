@@ -10,6 +10,7 @@ import { Footer } from "@/shared/components/footer";
 import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 function formatPrice(price: string) {
   return `${Number(price).toLocaleString("vi-VN")} đ`;
@@ -133,10 +134,7 @@ export default async function ExperiencesPage({
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <Image
-                        src={
-                          experience.images?.[0] ??
-                          `https://picsum.photos/seed/experience-${experience.slug}/700/500`
-                        }
+                        src={getImageOrDefault(experience.images, "experience", { w: 700, h: 500 })}
                         alt={experience.title}
                         fill
                         sizes="(min-width: 1024px) 33vw, 50vw"

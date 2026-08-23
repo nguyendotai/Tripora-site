@@ -7,6 +7,7 @@ import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 import { WishlistButton } from "@/shared/components/wishlist-button";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 export default async function DestinationDetailPage({
   params,
@@ -26,10 +27,7 @@ export default async function DestinationDetailPage({
       <main className="flex-1">
         <div className="relative h-[360px] w-full overflow-hidden sm:h-[440px]">
           <Image
-            src={
-              destination.images?.[0] ??
-              `https://picsum.photos/seed/${destination.slug}/1600/900`
-            }
+            src={getImageOrDefault(destination.images, "destination", { w: 1600, h: 900 })}
             alt={destination.name}
             fill
             priority

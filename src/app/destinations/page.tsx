@@ -9,6 +9,7 @@ import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 import { WishlistButton } from "@/shared/components/wishlist-button";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 export default async function DestinationsPage({
   searchParams,
@@ -53,10 +54,7 @@ export default async function DestinationsPage({
                   >
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <Image
-                        src={
-                          destination.images?.[0] ??
-                          `https://picsum.photos/seed/${destination.slug}/700/500`
-                        }
+                        src={getImageOrDefault(destination.images, "destination", { w: 700, h: 500 })}
                         alt={destination.name}
                         fill
                         sizes="(min-width: 1024px) 33vw, 50vw"

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Tour } from "@/features/tour/types/tour.types";
 import { formatPrice } from "@/shared/utils/format-price";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
 export function FeaturedTours({ tours }: { tours: Tour[] }) {
@@ -36,10 +37,7 @@ export function FeaturedTours({ tours }: { tours: Tour[] }) {
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
-                  src={
-                    tour.images?.[0] ??
-                    `https://picsum.photos/seed/tour-${tour.slug}/700/500`
-                  }
+                  src={getImageOrDefault(tour.images, "tour", { w: 700, h: 500 })}
                   alt={tour.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, 50vw"

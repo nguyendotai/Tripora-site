@@ -6,6 +6,7 @@ import { getTravelGuideBySlug } from "@/features/travel-guide/services/get-trave
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getCoverImageOrDefault } from "@/shared/utils/default-image";
 
 function estimateReadMinutes(content: string) {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
@@ -30,7 +31,7 @@ export default async function GuideDetailPage({
       <main className="flex-1">
         <div className="relative h-[320px] w-full overflow-hidden sm:h-[400px]">
           <Image
-            src={guide.coverImage ?? `https://picsum.photos/seed/${guide.slug}/1600/900`}
+            src={getCoverImageOrDefault(guide.coverImage, "guide", { w: 1600, h: 900 })}
             alt={guide.title}
             fill
             priority

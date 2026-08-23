@@ -11,6 +11,7 @@ import { getExperienceSchedule } from "@/features/experience-schedule/services/g
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 function formatPrice(price: string, currency: string) {
   return `${Number(price).toLocaleString("vi-VN")} ${currency}`;
@@ -45,8 +46,7 @@ export default async function ExperienceDetailPage({
   const schedule = await getExperienceSchedule(experience.id, todayISO(), addDaysISO(60));
   const upcomingDepartures = (schedule ?? []).filter((row) => row.available > 0);
 
-  const heroImage =
-    experience.images?.[0] ?? `https://picsum.photos/seed/experience-${experience.slug}/1600/900`;
+  const heroImage = getImageOrDefault(experience.images, "experience", { w: 1600, h: 900 });
   const galleryImages = experience.images?.slice(1) ?? [];
 
   return (

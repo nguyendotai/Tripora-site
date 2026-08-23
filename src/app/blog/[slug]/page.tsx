@@ -4,6 +4,7 @@ import { getBlogPostBySlug } from "@/features/blog/services/get-blog-posts";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getCoverImageOrDefault } from "@/shared/utils/default-image";
 
 export default async function BlogDetailPage({
   params,
@@ -23,7 +24,7 @@ export default async function BlogDetailPage({
       <main className="flex-1">
         <div className="relative h-[320px] w-full overflow-hidden sm:h-[400px]">
           <Image
-            src={post.coverImage ?? `https://picsum.photos/seed/${post.slug}/1600/900`}
+            src={getCoverImageOrDefault(post.coverImage, "blog", { w: 1600, h: 900 })}
             alt={post.title}
             fill
             priority

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Property } from "@/features/property/types/property.types";
 import { formatPrice } from "@/shared/utils/format-price";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
 export function FeaturedProperties({ properties }: { properties: Property[] }) {
@@ -38,10 +39,7 @@ export function FeaturedProperties({ properties }: { properties: Property[] }) {
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
-                  src={
-                    property.images?.[0] ??
-                    `https://picsum.photos/seed/hotel-${property.slug}/700/500`
-                  }
+                  src={getImageOrDefault(property.images, "hotel", { w: 700, h: 500 })}
                   alt={property.name}
                   fill
                   sizes="(min-width: 1024px) 33vw, 50vw"

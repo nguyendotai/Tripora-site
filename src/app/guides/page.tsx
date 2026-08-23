@@ -9,6 +9,7 @@ import { Footer } from "@/shared/components/footer";
 import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getCoverImageOrDefault } from "@/shared/utils/default-image";
 
 function estimateReadMinutes(content: string) {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
@@ -58,10 +59,7 @@ export default async function GuidesPage({
                   >
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
-                        src={
-                          guide.coverImage ??
-                          `https://picsum.photos/seed/${guide.slug}/700/450`
-                        }
+                        src={getCoverImageOrDefault(guide.coverImage, "guide", { w: 700, h: 450 })}
                         alt={guide.title}
                         fill
                         sizes="(min-width: 1024px) 33vw, 50vw"

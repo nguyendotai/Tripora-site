@@ -11,6 +11,7 @@ import { Footer } from "@/shared/components/footer";
 import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getCoverImageOrDefault, getImageOrDefault } from "@/shared/utils/default-image";
 
 const RESULT_LIMIT = 6;
 
@@ -137,10 +138,7 @@ export default async function SearchPage({
                     <ResultCard
                       key={destination.id}
                       href={`/destinations/${destination.slug}`}
-                      image={
-                        destination.images?.[0] ??
-                        `https://picsum.photos/seed/${destination.slug}/700/500`
-                      }
+                      image={getImageOrDefault(destination.images, "destination", { w: 700, h: 500 })}
                       title={destination.name}
                       subtitle={destination.country}
                     />
@@ -157,9 +155,7 @@ export default async function SearchPage({
                     <ResultCard
                       key={guide.id}
                       href={`/guides/${guide.slug}`}
-                      image={
-                        guide.coverImage ?? `https://picsum.photos/seed/${guide.slug}/700/450`
-                      }
+                      image={getCoverImageOrDefault(guide.coverImage, "guide", { w: 700, h: 450 })}
                       title={guide.title}
                       subtitle={guide.excerpt}
                     />
@@ -173,7 +169,7 @@ export default async function SearchPage({
                     <ResultCard
                       key={post.id}
                       href={`/blog/${post.slug}`}
-                      image={post.coverImage ?? `https://picsum.photos/seed/${post.slug}/700/450`}
+                      image={getCoverImageOrDefault(post.coverImage, "blog", { w: 700, h: 450 })}
                       title={post.title}
                       subtitle={post.excerpt}
                     />

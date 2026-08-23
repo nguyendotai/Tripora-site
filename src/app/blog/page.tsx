@@ -8,6 +8,7 @@ import { Footer } from "@/shared/components/footer";
 import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
+import { getCoverImageOrDefault } from "@/shared/utils/default-image";
 
 export default async function BlogPage({
   searchParams,
@@ -52,10 +53,7 @@ export default async function BlogPage({
                   >
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
-                        src={
-                          post.coverImage ??
-                          `https://picsum.photos/seed/${post.slug}/700/450`
-                        }
+                        src={getCoverImageOrDefault(post.coverImage, "blog", { w: 700, h: 450 })}
                         alt={post.title}
                         fill
                         sizes="(min-width: 1024px) 33vw, 50vw"

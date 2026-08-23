@@ -7,6 +7,7 @@ import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { RequireAuth } from "@/shared/components/require-auth";
 import { WishlistButton } from "@/shared/components/wishlist-button";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 
 function WishlistGrid() {
   const { data, isLoading, isError } = useListWishlistQuery();
@@ -43,10 +44,7 @@ function WishlistGrid() {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={
-                        destination.images?.[0] ??
-                        `https://picsum.photos/seed/${destination.slug}/700/500`
-                      }
+                      src={getImageOrDefault(destination.images, "destination", { w: 700, h: 500 })}
                       alt={destination.name}
                       fill
                       sizes="(min-width: 1024px) 33vw, 50vw"

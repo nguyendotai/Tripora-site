@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useGetRecommendedDestinationsQuery } from "@/features/destination/api/destination.api";
+import { getImageOrDefault } from "@/shared/utils/default-image";
 import { useAppSelector } from "@/shared/hooks/use-app-selector";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -38,10 +39,7 @@ export function RecommendedDestinations() {
               className="group relative block aspect-[4/3] overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-1"
             >
               <Image
-                src={
-                  destination.images?.[0] ??
-                  `https://picsum.photos/seed/${destination.slug}/700/500`
-                }
+                src={getImageOrDefault(destination.images, "destination", { w: 700, h: 500 })}
                 alt={destination.name}
                 fill
                 sizes="(min-width: 1024px) 33vw, 50vw"

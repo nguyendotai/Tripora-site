@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { getAirports } from "@/features/airport/services/get-airports";
 import { getFlights } from "@/features/flight/services/get-flights";
 import { Footer } from "@/shared/components/footer";
+import { GetSearchForm } from "@/shared/components/get-search-form";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
 
@@ -49,8 +50,8 @@ export default async function FlightsPage({
             Tìm chuyến bay theo sân bay đi và đến, sau đó chọn ngày khởi hành phù hợp.
           </p>
 
-          <form
-            method="GET"
+          <GetSearchForm
+            action="/flights"
             className="mt-6 grid gap-3 rounded-[var(--radius-lg)] border border-border bg-card p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
           >
             <div className="space-y-1.5">
@@ -95,7 +96,7 @@ export default async function FlightsPage({
               <PlaneTakeoff className="h-4 w-4" />
               Tìm chuyến bay
             </Button>
-          </form>
+          </GetSearchForm>
 
           {!result || result.items.length === 0 ? (
             <div className="mt-16 flex flex-col items-center gap-2 py-10 text-center">

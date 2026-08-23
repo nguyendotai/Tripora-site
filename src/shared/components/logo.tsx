@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export function Logo({ className }: { className?: string }) {
+export function Logo({
+  className,
+  light,
+}: {
+  className?: string;
+  light?: boolean;
+}) {
   return (
     <Link
       href="/"
@@ -15,7 +21,9 @@ export function Logo({ className }: { className?: string }) {
         priority
         className="h-9 w-9 object-contain"
       />
-      <span className="text-xl font-bold tracking-tight text-primary">
+      <span
+        className={`text-xl font-bold tracking-tight ${light ? "text-white" : "text-primary"}`}
+      >
         Tripora
       </span>
     </Link>

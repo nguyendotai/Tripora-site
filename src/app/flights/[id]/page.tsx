@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getFlightById } from "@/features/flight/services/get-flights";
 import { getFlightSchedules } from "@/features/flight-schedule/services/get-flight-schedules";
+import { ReviewSection } from "@/features/review/components/review-section";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
 import { ScrollReveal } from "@/shared/components/scroll-reveal";
@@ -115,6 +116,10 @@ export default async function FlightDetailPage({
                 ))}
               </div>
             )}
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.15} className="mt-8">
+            <ReviewSection target={{ flightId: flight.id }} />
           </ScrollReveal>
         </div>
       </main>

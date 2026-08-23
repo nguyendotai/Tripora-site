@@ -2,15 +2,21 @@ import { baseApi } from "@/shared/services/base-api";
 import type { PaginatedReviews, Review } from "../types/review.types";
 
 // V7 vòng 9 — Review giờ gắn được với Destination hoặc Property (đúng 1 trong 2). Dùng union type
-// để mọi lời gọi API luôn rõ ràng đang review đối tượng nào, tránh nhầm lẫn ID giữa 2 domain.
+// để mọi lời gọi API luôn rõ ràng đang review đối tượng nào, tránh nhầm lẫn ID giữa các domain.
+// V7 vòng 12 — thêm Tour/Experience/Flight, cùng nguyên tắc (đúng 1 trong 5).
 export type ReviewTarget =
-  | { destinationId: string; propertyId?: undefined }
-  | { propertyId: string; destinationId?: undefined };
+  | { destinationId: string; propertyId?: undefined; tourId?: undefined; experienceId?: undefined; flightId?: undefined }
+  | { propertyId: string; destinationId?: undefined; tourId?: undefined; experienceId?: undefined; flightId?: undefined }
+  | { tourId: string; destinationId?: undefined; propertyId?: undefined; experienceId?: undefined; flightId?: undefined }
+  | { experienceId: string; destinationId?: undefined; propertyId?: undefined; tourId?: undefined; flightId?: undefined }
+  | { flightId: string; destinationId?: undefined; propertyId?: undefined; tourId?: undefined; experienceId?: undefined };
 
 function targetTag(target: ReviewTarget): string {
-  return target.destinationId
-    ? `LIST-destination-${target.destinationId}`
-    : `LIST-property-${target.propertyId}`;
+  if (target.destinationId) return `LIST-destination-${target.destinationId}`;
+  if (target.propertyId) return `LIST-property-${target.propertyId}`;
+  if (target.tourId) return `LIST-tour-${target.tourId}`;
+  if (target.experienceId) return `LIST-experience-${target.experienceId}`;
+  return `LIST-flight-${target.flightId}`;
 }
 
 export interface CreateReviewInput {

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ContactProviderCard } from "@/features/conversation/components/contact-provider-card";
 import { TrackView } from "@/features/analytics-event/components/track-view";
 import { getExperienceBySlug } from "@/features/experience/services/get-experiences";
+import { ReviewSection } from "@/features/review/components/review-section";
 import { getExperienceSchedule } from "@/features/experience-schedule/services/get-experience-schedule";
 import { Footer } from "@/shared/components/footer";
 import { Navbar } from "@/shared/components/navbar";
@@ -148,10 +149,7 @@ export default async function ExperienceDetailPage({
             </ScrollReveal>
 
             <ScrollReveal>
-              <h2 className="text-xl font-bold">Đánh giá</h2>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Tính năng đánh giá experience chưa được hỗ trợ.
-              </p>
+              <ReviewSection target={{ experienceId: experience.id }} />
             </ScrollReveal>
           </div>
 

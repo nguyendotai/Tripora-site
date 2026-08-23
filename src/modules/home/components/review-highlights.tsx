@@ -16,6 +16,15 @@ function reviewedTarget(review: ReviewHighlight) {
   if (review.destination) {
     return { label: review.destination.name, href: `/destinations/${review.destination.slug}` };
   }
+  if (review.tour) {
+    return { label: review.tour.title, href: `/tours/${review.tour.slug}` };
+  }
+  if (review.experience) {
+    return { label: review.experience.title, href: `/experiences/${review.experience.slug}` };
+  }
+  if (review.flight) {
+    return { label: review.flight.flightNumber, href: `/flights/${review.flight.id}` };
+  }
   return null;
 }
 

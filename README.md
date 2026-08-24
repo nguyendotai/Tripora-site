@@ -4,6 +4,9 @@ The customer-facing web app for **Tripora**, a full-stack travel marketplace —
 
 Part of a 3-repo system: this app, the [backend API](https://github.com/nguyendotai/Tripora-backend), and an [admin/provider dashboard](https://github.com/nguyendotai/Tripora-admin).
 
+**🔗 Live demo:** [tripora-site.vercel.app](https://tripora-site.vercel.app/)
+> The backend runs on a free instance — first load can take 30–60s if it's been idle.
+
 ![Home page](docs/screenshots/home.jpg)
 
 ## Highlights
